@@ -1,11 +1,13 @@
 {
 
   "recruit": {
+    "thumbnail": "logo.png",
     "definition": "A recruit is an invitee to SWAT; someone invited by a inviter or recruiter."
   },
 
   "the leadership": {
+    "thumbnail": "logo.png",
     "definition": "The (SWAT) Leadership is the highest authoritative body of the army. It consists of only Commanders."
-  },
+  }
 
 }

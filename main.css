@@ -76,6 +76,59 @@ a:focus {
   color: #346EA5;
 }
 
+div#infobox {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  background: #00000080;
+  width: 500px;
+  height: 100px;
+  display: none;
+  flex-direction: row;
+  border-radius: 10px;
+}
+
+div#infobox img {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background: #6363637c;
+  height: 100px;
+}
+
+div#infobox p {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 div.indented {
-  margin-left: 15px;
+  padding-left: 15px;
+  border-left: 5px #FFFFFF20 solid;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+aside img {
+  width: 100%;
+  transition: 100ms;
+}
+
+aside img:hover {
+  filter: drop-shadow(0 0 100px #006900);
+}
+
+aside a {
+  color: #7CEC7C;
+}
+
+aside a.active:not(:hover, :active, :focus) {
+  text-shadow: 0 0 15px #6ba36b;
+}
+
+aside a:hover {
+  color: #52BE52;
+}
+
+aside a:active,
+aside a:focus {
+  color: #379237;
 }

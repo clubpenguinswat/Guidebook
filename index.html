@@ -13,9 +13,15 @@
 
   </head>
 
-  <body class="centerMode" onload="switchTab('Overview')">
+  <body class="centerMode" onload="onLoad()">
 
     <aside id="sidebar">
+
+      <img src="logo.png"></img>
+      <br>
+      <p style="text-align: center;"><b>THE SWAT CORPORATION</b></p>
+
+      <br>
 
       <b>NAVIGATION</b>
 
@@ -29,15 +35,24 @@
       <br>
       <div class="indented">
         <a href="#Essentials/Recruiting" onclick="switchTab('Essentials/Recruiting')">Recruiting</a>
+        <br>
+        <a href="#Essentials/Recruiting" onclick="switchTab('Essentials/Mentoring')">Mentoring</a>
+        <br>
+        <a href="#Essentials/Recruiting" onclick="switchTab('Essentials/Attending_Events')">Attending events</a>
       </div>
 
     </aside>
 
     <main>
 
-      
+      Loading…      
 
     </main>
+
+    <div id="infobox">
+      <img src="logo.png"></img>
+      <p></p>
+    </div>
 
     <script src="./app.js"></script>
 
