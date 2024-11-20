@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Unbounded:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
+
+:root {
+  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: radial-gradient(circle at top, #0069004F 5%, transparent 25%);
+  animation-name: Lamp;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+
+body.centerMode {
+  place-items: center;
+}
+
+aside {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 100%;
+  padding: 15px;
+  background: #00000080;
+}
+
+main {
+  width: 80%;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: 20%;
+  padding: 8rem;
+  font-family: Outfit;
+}
+
+body.centerMode main {
+  padding: 5rem;
+  margin-left: 20%;
+  margin-right: 0;
+  text-align: center;
+}
+
+a {
+  color: #85C4FF;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 100ms;
+}
+
+a:hover {
+  color: #5594CF;
+}
+
+a:active,
+a:focus {
+  color: #346EA5;
+}
+
+div.indented {
+  margin-left: 15px;
+}
