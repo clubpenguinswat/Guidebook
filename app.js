@@ -25,7 +25,17 @@ async function switchTab(tabName) {
   let path = tabName.replace("#", "");
 
   await fetch(`./guides/${path}.html`).then(content => {
-    return content.text();
+    if (content.status == 404) {
+      return `
+        <h1>Not found!</h1>
+        <div class="danger">
+          <b>Content not found!</b>\n<p>The guide you have directed to does not exist. Please find your guide using the navigation menu on the left.</p>
+          <small>In an attempt to fetch the hypothetical resource, a response with status code <b>${content.status}</b> was received.</small>
+        </div>
+      `;
+    } else {
+      return content.text();
+    }
   }).then(raw => {
     content.innerHTML = raw;
   });
