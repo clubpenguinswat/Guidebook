@@ -1,13 +1,23 @@
 {
 
+  "cpa battleground": {
+    "thumbnail": null,
+    "definition": "Club Penguin Army Battleground (CPAB) is an army-oriented Club Penguin private server."
+  },
+
   "recruit": {
-    "thumbnail": "logo.png",
+    "thumbnail": null,
     "definition": "A recruit is an invitee to SWAT; someone invited by a inviter or recruiter."
   },
 
   "the leadership": {
-    "thumbnail": "logo.png",
+    "thumbnail": null,
     "definition": "The (SWAT) Leadership is the highest authoritative body of the army. It consists of only Commanders."
+  },
+
+  "visitors": {
+    "thumbnail": null,
+    "definition": "A visitor is an individual present in the SWAT Discord server, belonging to another Club Penguin army, or unaffiliated."
   }
 
 }

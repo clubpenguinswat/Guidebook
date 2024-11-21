@@ -76,28 +76,53 @@ a:focus {
   color: #346EA5;
 }
 
+button {
+  border: none;
+  border-radius: 5px;
+  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  cursor: pointer;
+  transition: 100ms;
+}
+
 div#infobox {
   position: fixed;
   right: 5%;
-  bottom: 5%;
-  background: #00000080;
+  bottom: -50%;
+  background: #000000F0;
   width: 500px;
   height: 100px;
-  display: none;
+  display: flex;
   flex-direction: row;
   border-radius: 10px;
+  transition: bottom 500ms;
 }
 
 div#infobox img {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   background: #6363637c;
-  height: 100px;
+  height: 100%;
 }
 
 div#infobox p {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+div#infobox button {
+  background: #FFFFFF20;
+  border-radius: 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+div#infobox button:hover {
+  opacity: 0.8;
+}
+
+div#infobox button:active,
+div#infobox button:focus {
+  opacity: 0.6;
 }
 
 div.indented {
@@ -158,6 +183,32 @@ div.danger {
   border-left: 5px #691000 solid;
 }
 
+div.textblock {
+  background: #00000080;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin-top: 20px;
+  margin-top: 20px;
+}
+
+div.textblock button {
+  background: #00000080;
+  padding: 5px 10px;
+  float: right;
+  transition: 100ms;
+}
+
+div.textblock button:hover {
+  transform: scale(0.95);
+  opacity: 0.6;
+}
+
+div.textblock button:active,
+div.textblock button:focus {
+  transform: scale(0.90);
+  opacity: 0.4;
+}
+
 small {
   opacity: 0.5;
 }
@@ -195,4 +246,14 @@ span.discord-channel {
 
 span.discord-channel:hover {
   background: #5865F2;
+}
+
+dfn {
+  color: #DAC798;
+  cursor: pointer;
+  transition: 100ms;
+}
+
+dfn:hover {
+  color: #DAC798A0;
 }
