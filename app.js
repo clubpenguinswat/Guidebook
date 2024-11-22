@@ -12,11 +12,17 @@ fetch(`./definitions.json`).then(json => {
   definitions = JSON.parse(raw);
 });
 
-function onLoad() {
-  if (location.hash.replace("#", "") != "") {
-    switchTab(location.hash.replace(`#`, ``));
+async function onLoad() {
+  let hash = location.hash.replace(`#`, ``).split(":")[0];
+
+  if (hash != "") {
+    await switchTab(hash);
   } else {
-    switchTab('Overview');
+    await switchTab('Overview');
+  }
+
+  if (location.hash.replace(`#`, ``).search(":") != -1) {
+    document.querySelector(`[id="${location.hash.replace("#", "")}"]`).scrollIntoView();
   }
 }
 
@@ -63,6 +69,14 @@ async function switchTab(tabName) {
     copyButton.innerHTML = "Copy";
     copyButton.setAttribute("onclick", "copyText(this)");
     textblock.prepend(copyButton);
+  });
+
+  let linkedContent = document.querySelectorAll(`[id*=":"]`);
+  linkedContent.forEach(function(linkedItem) {
+    let copyButton = document.createElement("button");
+    copyButton.innerHTML = "Copy Link";
+    copyButton.setAttribute("onclick", `copyLink("${linkedItem.id}")`);
+    linkedItem.appendChild(copyButton);
   });
 
 }
@@ -114,10 +128,13 @@ function hideInfobox(timeout) {
 }
 
 async function copyText(element) {
-  console.log(element.parentElement);
   await navigator.clipboard.writeText(element.parentElement.textContent.replace("Copy", "").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("\n\n", "\n").replaceAll("\n\n", "\n").replaceAll("\n \n", "\n").replaceAll("\n ", "\n").replaceAll("\n-", "\n  -").trim());
   element.innerHTML = "Copied";
   setTimeout(() => {
     element.innerHTML = "Copy";
   }, 5000);
+}
+
+async function copyLink(id) {
+  await navigator.clipboard.writeText(`${location.host}/#${id}`);
 }

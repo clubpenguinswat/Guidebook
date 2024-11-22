@@ -88,7 +88,7 @@ div#infobox {
   position: fixed;
   right: 5%;
   bottom: -50%;
-  background: #000000F0;
+  background: #414040F0;
   width: 600px;
   height: 150px;
   display: flex;
@@ -210,6 +210,51 @@ div.textblock button:active,
 div.textblock button:focus {
   transform: scale(0.90);
   opacity: 0.4;
+}
+
+h1 button,
+h2 button,
+h3 button,
+h4 button,
+h5 button,
+h6 button {
+  display: none;
+  background: #00000080;
+  margin-left: 10px;
+  padding: 5px 10px;
+  transform: scale(0.90);
+  opacity: 0;
+  transition: 100ms;
+}
+
+h1:hover button,
+h2:hover button,
+h3:hover button,
+h4:hover button,
+h5:hover button,
+h6:hover button {
+  display: inline-block;
+  opacity: 0.2;
+}
+
+h1 button:hover,
+h2 button:hover,
+h3 button:hover,
+h4 button:hover,
+h5 button:hover,
+h6 button:hover {
+  transform: scale(0.85);
+  opacity: 0.6;
+}
+
+h1 button:active, h1 button:focus,
+h2 button:active, h2 button:focus,
+h3 button:active, h3 button:focus,
+h4 button:active, h4 button:focus,
+h5 button:active, h5 button:focus,
+h6 button:active, h6 button:focus {
+  transform: scale(0.80);
+  opacity: 1.0;
 }
 
 small {
