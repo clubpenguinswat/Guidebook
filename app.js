@@ -3,6 +3,8 @@ let body = document.body;
 let content = document.querySelector("main");
 let infobox = document.querySelector("div#infobox");
 let currentTab = "Overview";
+let infoboxTimeout;
+let infoboxDefinition;
 
 fetch(`./definitions.json`).then(json => {
   return json.text();
@@ -60,7 +62,7 @@ async function switchTab(tabName) {
     let copyButton = document.createElement("button");
     copyButton.innerHTML = "Copy";
     copyButton.setAttribute("onclick", "copyText(this)");
-    textblock.appendChild(copyButton);
+    textblock.prepend(copyButton);
   });
 
 }
@@ -73,14 +75,27 @@ function define(dfnElement) {
     definition = {
       definition: `Error! Could not find a definition for <b>${dfnElement.innerText}</b>.`
     };
+    hideInfobox(5000);
+  } else {
+    hideInfobox(30000);
   }
 
-  infobox.style.bottom = "5%";
-  document.querySelector(`div#infobox img`).src = definition.thumbnail ?? 'logo.png';
-  document.querySelector(`div#infobox p`).innerHTML = definition.definition;
+  if (!isInfoboxVisible()) {
+    infobox.style.bottom = "5%";
+    document.querySelector(`div#infobox img`).src = `thumbnails/${definition.thumbnail ?? 'logo.png'}`;
+    document.querySelector(`div#infobox p`).innerHTML = definition.definition;
+  } else {
+    hideInfobox();
+  }
 
-  hideInfobox(30000);
+}
 
+function isInfoboxVisible(requestedDfn) {
+  if (infobox.style.bottom == "-50%" || !infobox.style.bottom) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 function hideInfobox(timeout) {
@@ -89,16 +104,18 @@ function hideInfobox(timeout) {
   }
 
   if (timeout) {
-    setTimeout(() => {
+    if (infoboxTimeout) clearInterval(infoboxTimeout);
+    infoboxTimeout = setTimeout(() => {
       hide();
-    }, timeout)
+    }, timeout);
   } else {
     hide();
   }
 }
 
 async function copyText(element) {
-  await navigator.clipboard.writeText(element.parentElement.childNodes[0].data.trim());
+  console.log(element.parentElement);
+  await navigator.clipboard.writeText(element.parentElement.textContent.replace("Copy", "").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("\n\n", "\n").replaceAll("\n\n", "\n").replaceAll("\n \n", "\n").replaceAll("\n ", "\n").replaceAll("\n-", "\n  -").trim());
   element.innerHTML = "Copied";
   setTimeout(() => {
     element.innerHTML = "Copy";

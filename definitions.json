@@ -5,14 +5,34 @@
     "definition": "Club Penguin Army Battleground (CPAB) is an army-oriented Club Penguin private server."
   },
 
+  "discord scouting": {
+    "thumbnail": "communication.png",
+    "definition": "Discord scouting is the most popular recruiting method which involves messaging new individuals in another Discord community."
+  },
+
   "recruit": {
     "thumbnail": null,
     "definition": "A recruit is an invitee to SWAT; someone invited by a inviter or recruiter."
   },
 
+  "recruitment profile": {
+    "thumbnail": "recruitment profiles.png",
+    "definition": "A recruitment profile is a pre-created Discord account offered by the SWAT Corporation for recruiting purposes."
+  },
+
+  "support ticket": {
+    "thumbnail": null,
+    "definition": "A support ticket is a thread which only the requestor and staff members may access. The requestor can ask for help in this thread."
+  },
+
   "the leadership": {
     "thumbnail": null,
     "definition": "The (SWAT) Leadership is the highest authoritative body of the army. It consists of only Commanders."
+  },
+
+  "troopstealing": {
+    "thumbnail": "troopstealing.png",
+    "definition": "Troopstealing is the act of recruiting a member into your own army who is already enlisted in another. It is often frowned upon."
   },
 
   "visitors": {
