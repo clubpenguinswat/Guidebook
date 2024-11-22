@@ -136,5 +136,5 @@ async function copyText(element) {
 }
 
 async function copyLink(id) {
-  await navigator.clipboard.writeText(`${location.host}/#${id}`);
+  await navigator.clipboard.writeText(`https://${location.host}/Guidebook/#${id}`);
 }
