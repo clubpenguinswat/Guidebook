@@ -83,21 +83,24 @@ async function switchTab(tabName) {
 
 function define(dfnElement) {
 
-  let definition = definitions[dfnElement.innerText.toLowerCase()];
+  let requestedDfn = dfnElement.innerText;
+  let definition = definitions[requestedDfn.toLowerCase()];
 
   if (!definition) {
     definition = {
-      definition: `Error! Could not find a definition for <b>${dfnElement.innerText}</b>.`
+      definition: `Error! Could not find a definition for <b>${requestedDfn}</b>.`
     };
     hideInfobox(5000);
   } else {
     hideInfobox(30000);
   }
 
-  if (!isInfoboxVisible()) {
+  if (!isInfoboxVisible() || requestedDfn != infoboxDefinition) {
     infobox.style.bottom = "5%";
     document.querySelector(`div#infobox img`).src = `thumbnails/${definition.thumbnail ?? 'logo.png'}`;
     document.querySelector(`div#infobox p`).innerHTML = definition.definition;
+    infoboxDefinition = requestedDfn;
+    hideInfobox(30000);
   } else {
     hideInfobox();
   }
