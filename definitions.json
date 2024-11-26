@@ -1,5 +1,10 @@
 {
 
+  "chatbar formation": {
+    "thumbnail": null,
+    "definition": "The chatbar formation is a horizontal line formation in which players form a line at the bottom edge of the screen. It is often represented by the underscore (\"_\") symbol."
+  },
+
   "cpa battleground": {
     "thumbnail": null,
     "definition": "Club Penguin Army Battleground (CPAB) is an army-oriented Club Penguin private server."
@@ -8,6 +13,21 @@
   "discord scouting": {
     "thumbnail": "communication.png",
     "definition": "Discord scouting is the most popular recruiting method which involves messaging new individuals in another Discord community."
+  },
+
+  "inside dojo": {
+    "thumbnail": null,
+    "definition": "Inside Dojo is the Dojo room which is found after entering the building within the Dojo Courtyard. It cannot be directly accessed from the map."
+  },
+
+  "inside mine": {
+    "thumbnail": null,
+    "definition": "Inside Mine is the Mine room which is found after entering the building within the Mine Shack. It cannot be directly accessed from the map."
+  },
+
+  "private": {
+    "thumbnail": null,
+    "definition": "Private is the lowest rank in SWAT, besides Recruit. It is achieved by creating a CPA Battleground account."
   },
 
   "recruit": {
@@ -20,6 +40,11 @@
     "definition": "A recruitment profile is a pre-created Discord account offered by the SWAT Corporation for recruiting purposes."
   },
 
+  "seasons": {
+    "thumbnail": null,
+    "definition": "SWAT Seasons are a series of monthly themed events. Seasons contains missions in which agents have to compete."
+  },
+
   "support ticket": {
     "thumbnail": null,
     "definition": "A support ticket is a thread which only the requestor and staff members may access. The requestor can ask for help in this thread."
@@ -30,9 +55,19 @@
     "definition": "The (SWAT) Leadership is the highest authoritative body of the army. It consists of only Commanders."
   },
 
+  "the swat corporation": {
+    "thumbnail": null,
+    "definition": "The SWAT Corporation is the authority working behind the army. It consists of staff members, Staff-in-Training, and advisors. It is the chief decision-making workplace."
+  },
+
   "troopstealing": {
     "thumbnail": "troopstealing.png",
     "definition": "Troopstealing is the act of recruiting a member into your own army who is already enlisted in another. It is often frowned upon."
+  },
+
+  "underground pool": {
+    "thumbnail": null,
+    "definition": "The Underground Pool is the Cave room which is found after entering the manhole in the Plaza, or a cave in the Inside Mine. It cannot be directly accessed from the map."
   },
 
   "visitors": {

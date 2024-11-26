@@ -2,6 +2,7 @@
 let body = document.body;
 let content = document.querySelector("main");
 let infobox = document.querySelector("div#infobox");
+let previousTab = null;
 let currentTab = "Overview";
 let infoboxTimeout;
 let infoboxDefinition;
@@ -13,6 +14,7 @@ fetch(`./definitions.json`).then(json => {
 });
 
 async function onLoad() {
+  let originalHash = location.hash;
   let hash = location.hash.replace(`#`, ``).split(":")[0];
 
   if (hash != "") {
@@ -21,16 +23,23 @@ async function onLoad() {
     await switchTab('Overview');
   }
 
-  if (location.hash.replace(`#`, ``).search(":") != -1) {
-    document.querySelector(`[id="${location.hash.replace("#", "")}"]`).scrollIntoView();
+  if (originalHash.replace(`#`, ``).search(":") != -1) {
+    console.log(`Sub-internal link found. Scrolling into ${originalHash.replace("#", "")}.`);
+    document.querySelector(`[id="${originalHash.replace("#", "")}"]`).scrollIntoView();
+    location.hash = originalHash;
   }
 }
 
-async function switchTab(tabName) {
+async function switchTab(tabName, redirect) {
 
   if (!tabName) return new Error("Invalid tab name");
 
+  let appendix = ``;
   let path = tabName.replace("#", "");
+
+  if (redirect) {
+    appendix = `<a onclick="goBack()">← Go Back</a>`
+  }
 
   await fetch(`./guides/${path}.html`).then(content => {
     if (content.status == 404) {
@@ -45,7 +54,7 @@ async function switchTab(tabName) {
       return content.text();
     }
   }).then(raw => {
-    content.innerHTML = raw;
+    content.innerHTML = `${appendix}${raw}`;
   });
 
   if (tabName != "Overview") {
@@ -54,9 +63,12 @@ async function switchTab(tabName) {
     body.classList.add("centerMode");
   }
 
-  document.querySelector(`aside a[href="#${currentTab}"]`).classList.remove("active");
-  document.querySelector(`aside a[href="#${tabName}"]`).classList.add("active");
+  document.querySelector(`aside a[href="#${currentTab}"]`)?.classList.remove("active");
+  document.querySelector(`aside a[href="#${tabName}"]`)?.classList.add("active");
+
+  previousTab = currentTab;
   currentTab = tabName;
+  location.hash = `#${tabName}`;
 
   let dfnElements = document.querySelectorAll(`dfn`);
   dfnElements.forEach(function(dfnElement) {
@@ -65,6 +77,8 @@ async function switchTab(tabName) {
 
   let textblocks = document.querySelectorAll(`div.textblock`);
   textblocks.forEach(function(textblock) {
+    textblock.innerHTML = textblock.innerHTML.trim();
+
     let copyButton = document.createElement("button");
     copyButton.innerHTML = "Copy";
     copyButton.setAttribute("onclick", "copyText(this)");
@@ -78,6 +92,8 @@ async function switchTab(tabName) {
     copyButton.setAttribute("onclick", `copyLink("${linkedItem.id}")`);
     linkedItem.appendChild(copyButton);
   });
+
+  checkLinks();
 
 }
 
@@ -107,6 +123,23 @@ function define(dfnElement) {
 
 }
 
+function checkLinks() {
+  let externalLinks = document.querySelectorAll(`a[href^="http:"], a[href^="https:"]`);
+  externalLinks.forEach(function(link) {
+    link.setAttribute("target", "_blank");
+  });
+
+  let internalLinks = document.querySelectorAll(`a[href^="#"]`);
+  internalLinks.forEach(function(link) {
+    let targetTabName = link.getAttribute("href").replace("#", "");
+    if (!link.classList.contains("redirect")) {
+      link.setAttribute("onclick", `switchTab("${targetTabName}")`);
+    } else {
+      link.setAttribute("onclick", `switchTab("${targetTabName}", true)`);
+    }
+  });
+}
+
 function isInfoboxVisible(requestedDfn) {
   if (infobox.style.bottom == "-50%" || !infobox.style.bottom) {
     return false;
@@ -130,8 +163,12 @@ function hideInfobox(timeout) {
   }
 }
 
+function goBack() {
+  switchTab(previousTab, false);
+}
+
 async function copyText(element) {
-  await navigator.clipboard.writeText(element.parentElement.textContent.replace("Copy", "").replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("\n\n", "\n").replaceAll("\n\n", "\n").replaceAll("\n \n", "\n").replaceAll("\n ", "\n").replaceAll("\n-", "\n  -").trim());
+  await navigator.clipboard.writeText(element.parentElement.textContent.replace("Copy", "").trim());
   element.innerHTML = "Copied";
   setTimeout(() => {
     element.innerHTML = "Copy";
