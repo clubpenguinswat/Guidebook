@@ -60,6 +60,61 @@ body.centerMode main {
   text-align: center;
 }
 
+aside img {
+  width: 100%;
+  transition: 100ms;
+}
+
+aside img:hover {
+  filter: drop-shadow(0 0 100px #006900);
+}
+
+aside a {
+  color: #7CEC7C;
+}
+
+aside a.active:not(:hover, :active, :focus) {
+  text-shadow: 0 0 15px #6ba36b;
+}
+
+aside a:hover {
+  color: #52BE52;
+}
+
+aside a:active,
+aside a:focus {
+  color: #379237;
+}
+
+div#launch {
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #242424E0;
+  place-items: center;
+  text-align: center;
+  backdrop-filter: blur(5px);
+}
+
+div#launch img {
+  margin-top: 15%;
+  width: 256px;
+  transition: 100ms;
+}
+
+div#launch img:hover {
+  filter: drop-shadow(0 0 100px #006900);
+}
+
+div#launch h1,
+div#launch p {
+  width: 100%;
+}
+
 a {
   color: #85C4FF;
   font-weight: 600;
@@ -83,6 +138,19 @@ button {
   font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
   cursor: pointer;
   transition: 100ms;
+}
+
+input {
+  border: none;
+  outline: 0px #1A1B1A solid;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  transition: 100ms;
+}
+
+input:focus {
+  outline: 5px #1A1B1A solid;
 }
 
 div#infobox {
@@ -133,32 +201,6 @@ div.indented {
   border-left: 5px #FFFFFF20 solid;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-}
-
-aside img {
-  width: 100%;
-  transition: 100ms;
-}
-
-aside img:hover {
-  filter: drop-shadow(0 0 100px #006900);
-}
-
-aside a {
-  color: #7CEC7C;
-}
-
-aside a.active:not(:hover, :active, :focus) {
-  text-shadow: 0 0 15px #6ba36b;
-}
-
-aside a:hover {
-  color: #52BE52;
-}
-
-aside a:active,
-aside a:focus {
-  color: #379237;
 }
 
 div.tip,
@@ -263,6 +305,10 @@ small {
   opacity: 0.5;
 }
 
+small.error {
+  color: #ffad9f;
+}
+
 ul,
 ol {
   margin-top: 25px;
@@ -320,8 +366,10 @@ kbd {
   border-bottom: 3px #363636 solid;
   border-radius: 5px;
   text-transform: uppercase;
+  transition: 100ms;
 }
 
 kbd:active {
   border-bottom: none;
+  filter: brightness(60%);
 }

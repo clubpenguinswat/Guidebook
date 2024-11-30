@@ -1,4 +1,3 @@
-
 let body = document.body;
 let content = document.querySelector("main");
 let infobox = document.querySelector("div#infobox");
@@ -7,13 +6,26 @@ let currentTab = "Overview";
 let infoboxTimeout;
 let infoboxDefinition;
 
-fetch(`./definitions.json`).then(json => {
-  return json.text();
-}).then(raw => {
-  definitions = JSON.parse(raw);
-});
+let launcher = {
+  screen: document.querySelector(`div#launch`),
+  text: document.querySelector(`div#launch p`),
+  input: document.querySelector(`div#launch input`),
+  errorText: document.querySelector(`div#launch small.error`)
+}
 
 async function onLoad() {
+  await fetch(`./config.json`).then(json => {
+    return json.text();
+  }).then(raw => {
+    config = JSON.parse(raw);
+  });
+  await fetch(`./definitions.json`).then(json => {
+    return json.text();
+  }).then(raw => {
+    definitions = JSON.parse(raw);
+  });
+  await startLauncher();
+
   let originalHash = location.hash;
   let hash = location.hash.replace(`#`, ``).split(":")[0];
 
@@ -121,6 +133,11 @@ function define(dfnElement) {
     hideInfobox();
   }
 
+  let dfnElements = document.querySelectorAll(`div#infobox dfn`);
+  dfnElements.forEach(function(dfnElement) {
+    dfnElement.setAttribute(`onclick`, `define(this)`);
+  });
+
 }
 
 function checkLinks() {
@@ -177,4 +194,36 @@ async function copyText(element) {
 
 async function copyLink(id) {
   await navigator.clipboard.writeText(`https://${location.host}/Guidebook/#${id}`);
+}
+
+async function startLauncher() {
+  launcher.text.innerHTML = `Greetings, agent! Please enter the password required to access this interesting guidebook…`;
+
+  let storedPassword = sessionStorage.getItem("Password");
+  if (storedPassword) {
+    login(storedPassword);
+  } else {
+    launcher.screen.style.display = "flex";
+    launcher.input.focus();
+  }
+}
+
+async function login(password) {
+  dcodeIO.bcrypt.compare(password, config["hashed_password"], function(err, res) {
+    if (err) {
+      launcher.screen.style.display = "flex";
+      launcher.input.focus();
+      console.error(err);
+      return new Error(err);
+    };
+    if (res === false) {
+      launcher.screen.style.display = "flex";
+      launcher.input.focus();
+      launcher.errorText.innerHTML = `Incorrect password! You might want to keep typing until you get it right.`;
+    } else if (res === true) {
+      launcher.screen.style.display = "none";
+      launcher.input.focus();
+      sessionStorage.setItem("Password", password);
+    }
+  });
 }

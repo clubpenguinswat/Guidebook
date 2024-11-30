@@ -44,6 +44,8 @@
         <a href="#Essentials/Mentoring">Mentoring</a>
         <br>
         <a href="#Essentials/Attending_Events">Attending Events</a>
+        <br>
+        <a href="#Essentials/Leading_Events">Leading Events</a>
       </div>
       <a href="#SWAT_Bot">SWAT Bot</a>
       <br>
@@ -70,6 +72,16 @@
       <button onclick="hideInfobox()">×</button>
     </div>
 
+    <div id="launch">
+      <img src="logo.png" alt="SWAT logo"></img>
+      <h1>CORPORATION GUIDEBOOK</h1>
+      <p>Launching…</p>
+      <input id="password" placeholder="Password" oninput="login(this.value)"></input>
+      <br>
+      <small class="error"></small>
+    </div>
+
+    <script src="./node_modules/bcryptjs/dist/bcrypt.min.js"></script>
     <script src="./app.js"></script>
 
   </body>

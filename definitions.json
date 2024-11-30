@@ -1,5 +1,10 @@
 {
 
+  "army branches": {
+    "thumbnail": null,
+    "definition": "Army branches are the sub-forces of an army. These are popularly known as \"divisions\" in the army community. These may also be understood as the branches of an army."
+  },
+
   "chatbar formation": {
     "thumbnail": null,
     "definition": "The chatbar formation is a horizontal line formation in which players form a line at the bottom edge of the screen. It is often represented by the underscore (\"_\") symbol."
@@ -15,6 +20,16 @@
     "definition": "Discord scouting is the most popular recruiting method which involves messaging new individuals in another Discord community."
   },
 
+  "swat divisions": {
+    "thumbnail": null,
+    "definition": "The SWAT Divisions are two <dfn>army branches</dfn>. These are SWAT's sub-forces which have their own leaders. Broadly, they are part of the SWAT army."
+  },
+
+  "division command elections": {
+    "thumbnail": null,
+    "definition": "Division Command Elections (DCE) take place monthly to decide the Division Command members for the new term. One month represents one term. These elections decide 2 leaders for the <dfn>SWAT Divisions</dfn>."
+  },
+
   "inside dojo": {
     "thumbnail": null,
     "definition": "Inside Dojo is the Dojo room which is found after entering the building within the Dojo Courtyard. It cannot be directly accessed from the map."
@@ -23,6 +38,11 @@
   "inside mine": {
     "thumbnail": null,
     "definition": "Inside Mine is the Mine room which is found after entering the building within the Mine Shack. It cannot be directly accessed from the map."
+  },
+
+  "pre-room": {
+    "thumbnail": null,
+    "definition": "The pre-room is the preparation period of an event. It is the room joined during the \"log on\" period and during <dfn>warm up</dfn>."
   },
 
   "private": {
@@ -56,7 +76,7 @@
   },
 
   "the swat corporation": {
-    "thumbnail": null,
+    "thumbnail": "penguin professional.png",
     "definition": "The SWAT Corporation is the authority working behind the army. It consists of staff members, Staff-in-Training, and advisors. It is the chief decision-making workplace."
   },
 
@@ -73,6 +93,11 @@
   "visitors": {
     "thumbnail": null,
     "definition": "A visitor is an individual present in the SWAT Discord server, belonging to another Club Penguin army, or unaffiliated."
+  },
+
+  "warm up": {
+    "thumbnail": null,
+    "definition": "Warm up occurs later in the <dfn>pre-room</dfn>, during which tactics are sent. This is not part of the main event, however, and is only for activity checks and practice."
   }
 
 }
