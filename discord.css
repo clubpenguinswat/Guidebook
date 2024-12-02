@@ -1,0 +1,34 @@
+span.discord-channel::before {
+  content: "#";
+}
+
+span.discord-channel {
+  background: #3C4270;
+  border-radius: 3px;
+  padding-top: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 0;
+}
+
+span.discord-channel:hover {
+  background: #5865F2;
+}
+
+span.slash-command::before {
+  content: "/";
+}
+
+span.slash-command {
+  background: #3C4270;
+  border-radius: 3px;
+  padding-top: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 0;
+  cursor: copy;
+}
+
+span.slash-command:hover {
+  background: #5865F2;
+}

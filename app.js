@@ -84,6 +84,7 @@ async function switchTab(tabName, redirect) {
 
   let dfnElements = document.querySelectorAll(`dfn`);
   dfnElements.forEach(function(dfnElement) {
+    dfnElement.setAttribute(`title`, `Define "${dfnElement.innerText}"`);
     dfnElement.setAttribute(`onclick`, `define(this)`);
   });
 
@@ -103,6 +104,12 @@ async function switchTab(tabName, redirect) {
     copyButton.innerHTML = "Copy Link";
     copyButton.setAttribute("onclick", `copyLink("${linkedItem.id}")`);
     linkedItem.appendChild(copyButton);
+  });
+
+  let slashCommandMentions = document.querySelectorAll(`span.slash-command`);
+  slashCommandMentions.forEach(function(mentionElement) {
+    mentionElement.setAttribute(`title`, `Click to copy`);
+    mentionElement.setAttribute(`onclick`, `copySlashCommand(this)`);
   });
 
   checkLinks();
@@ -135,6 +142,7 @@ function define(dfnElement) {
 
   let dfnElements = document.querySelectorAll(`div#infobox dfn`);
   dfnElements.forEach(function(dfnElement) {
+    dfnElement.setAttribute(`title`, `Define "${dfnElement.innerText}"`);
     dfnElement.setAttribute(`onclick`, `define(this)`);
   });
 
@@ -143,6 +151,7 @@ function define(dfnElement) {
 function checkLinks() {
   let externalLinks = document.querySelectorAll(`a[href^="http:"], a[href^="https:"]`);
   externalLinks.forEach(function(link) {
+    link.setAttribute("title", "This external link will open in a new tab.");
     link.setAttribute("target", "_blank");
   });
 
@@ -150,8 +159,10 @@ function checkLinks() {
   internalLinks.forEach(function(link) {
     let targetTabName = link.getAttribute("href").replace("#", "");
     if (!link.classList.contains("redirect")) {
+      link.setAttribute("title", "This internal link will redirect you to another resource.");
       link.setAttribute("onclick", `switchTab("${targetTabName}")`);
     } else {
+      link.setAttribute("title", "This internal link will switch you to another resource.");
       link.setAttribute("onclick", `switchTab("${targetTabName}", true)`);
     }
   });
@@ -194,6 +205,10 @@ async function copyText(element) {
 
 async function copyLink(id) {
   await navigator.clipboard.writeText(`https://${location.host}/Guidebook/#${id}`);
+}
+
+async function copySlashCommand(element) {
+  await navigator.clipboard.writeText(`/${element.innerText}`);
 }
 
 async function startLauncher() {
