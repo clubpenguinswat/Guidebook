@@ -60,6 +60,11 @@
     "definition": "A recruitment profile is a prepared Discord account offered by the SWAT Corporation for recruiting purposes. It is configured for efficient recruiting."
   },
 
+  "recruitment regiment": {
+    "thumbnail": null,
+    "definition": "The Recruitment Regiment is a workforce or team dedicated to recruiting and mentoring within SWAT. All its members are expected to complete periodic requirements."
+  },
+
   "seasons": {
     "thumbnail": null,
     "definition": "SWAT Seasons are a series of monthly themed events. Seasons contains missions in which agents have to compete."

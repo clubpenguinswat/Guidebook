@@ -21,7 +21,13 @@ Please do not share the link to the guidebook publicly, and ensure it is limited
   - Make sure to begin the `href` attribute of the tag with a `#` for it to correctly render the internal link.
 - Add external links in articles using the `<a>` tag. If the `href` attribute begins with `http:` or `https:`, the client will consider it as an external link and automatically add `target="_blank"` for you. Do not add a `target` attribute unless you have to override this setting.
 - Use headings synchronously and in order. The top-level heading is defined by the `<h1>` tag, and the lowest-level heading is defined by the `<h6>` tag.
+- Add anchors to headings by adding the `id` attribute to them.
+  - An anchor must be inserted in the format: `Article_Link:Heading_Query`.
 - Use textblocks (`<div class="textblock">`) when writing text examples or blocks of text which can be copied to clipboard.
 - Any scripts unique to an article should be included in the `<script>` tag within the article. Similarly, any CSS unique to an article should be included in the `<style>` tag within the article.
   - Note that code included in the `<script>` and `<style>` tags apply globally, in the entire guidebook client, for as long as the article is being viewed.
-- Each page should have a proper hash, which is the same as the page name. Except, spaces should be replaced with `_`, and symbols should be avoided.
+- Each page should have a proper filename, which is the same as the page name. Except, spaces should be replaced with `_`, and symbols should be avoided.
+- You can show content depending on their device. To achieve this, you can use the `mobileOnly` and `pcOnly` classes.
+  - Apply the `mobileOnly` class on an element you wish to display only on mobile.
+  - Apply the `pcOnly` class on an element you wish to display on non-mobile devices.
+  - This feature is useful to develop web-responsive features, or to show content depending on the user's device.

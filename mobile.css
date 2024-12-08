@@ -1,0 +1,35 @@
+@media screen and (max-width: 1000px) {
+
+  body.centerMode main,
+  main {
+    margin-left: 0px;
+  }
+
+  aside {
+    display: none;
+  }
+
+  .mobileOnly {
+    display: initial;
+  }
+
+  .pcOnly {
+    display: none;
+  }
+
+  div#infobox {
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  div#infobox button,
+  div#infobox img {
+    border-radius: 0;
+  }
+
+  div#infobox.visible {
+    bottom: 0;
+  }
+
+}

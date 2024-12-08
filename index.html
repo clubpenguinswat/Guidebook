@@ -16,14 +16,21 @@
     <link rel="stylesheet" href="./main.css">
     <link rel="stylesheet" href="./animations.css">
     <link rel="stylesheet" href="./discord.css">
+    <link rel="stylesheet" href="./mobile.css">
+
+    <script src="./bcrypt.min.js" defer></script>
+    <script src="./app.js" defer></script>
+    <script src="./sessionManager.js" defer></script>
 
   </head>
 
   <body class="centerMode" onload="onLoad()">
 
+    <button id="menuToggler" class="mobileOnly">Menu</button>
+
     <aside id="sidebar">
 
-      <img src="logo.png"></img>
+      <img class="glowOnHover" src="logo.png"></img>
       <br>
       <p style="text-align: center;"><b>THE SWAT CORPORATION</b></p>
 
@@ -58,6 +65,8 @@
       <a href="#Server_Tickets">Server Tickets</a>
       <br>
       <a href="#Diplomacy">Diplomacy</a>
+      <br>
+      <a href="#Recruitment_Regiment">Recruitment Regiment</a>
 
     </aside>
 
@@ -68,22 +77,19 @@
     </main>
 
     <div id="infobox">
-      <img src="logo.png" alt="infobox thumbnail"></img>
+      <img class="unsetBorderRadius" src="logo.png" alt="infobox thumbnail"></img>
       <p>Loading…</p>
       <button onclick="hideInfobox()">×</button>
     </div>
 
     <div id="launch">
-      <img src="logo.png" alt="SWAT logo"></img>
+      <img class="glowOnHover" src="logo.png" alt="SWAT logo"></img>
       <h1>CORPORATION GUIDEBOOK</h1>
       <p>Launching…</p>
       <input id="password" placeholder="Password" oninput="login(this.value)"></input>
       <br>
       <small class="error"></small>
     </div>
-
-    <script src="./bcrypt.min.js"></script>
-    <script src="./app.js"></script>
 
   </body>
 

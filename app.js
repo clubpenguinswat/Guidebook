@@ -1,30 +1,43 @@
-let body = document.body;
-let content = document.querySelector("main");
-let infobox = document.querySelector("div#infobox");
-let previousTab = null;
-let currentTab = "Overview";
-let infoboxTimeout;
-let infoboxDefinition;
+const client = {
+  config: undefined,
+  body: document.body,
+  main: document.querySelector("main"),
+  infobox: document.querySelector("div#infobox"),
+  tabHistory: [],
+  previousTab: null,
+  currentTab: null,
+  infoboxTimeout: null,
+  infoboxDefinition: undefined,
+  launcher: {
+    screen: document.querySelector("div#launch"),
+    text: document.querySelector("div#launch p"),
+    input: document.querySelector("div#launch input"),
+    errorText: document.querySelector("div#launch small.error")
+  }
+};
 
-let launcher = {
-  screen: document.querySelector(`div#launch`),
-  text: document.querySelector(`div#launch p`),
-  input: document.querySelector(`div#launch input`),
-  errorText: document.querySelector(`div#launch small.error`)
-}
+client.infobox.thumbnail = document.querySelector("div#infobox img");
+client.infobox.text = document.querySelector("div#infobox p");
+client.infobox.button = document.querySelector("div#infobox button");
 
 async function onLoad() {
+
   await fetch(`./config.json`).then(json => {
     return json.text();
   }).then(raw => {
-    config = JSON.parse(raw);
+    client.config = JSON.parse(raw);
   });
   await fetch(`./definitions.json`).then(json => {
     return json.text();
   }).then(raw => {
     definitions = JSON.parse(raw);
   });
+  await goToURL();
   await startLauncher();
+
+}
+
+async function goToURL() {
 
   let originalHash = location.hash;
   let hash = location.hash.replace(`#`, ``).split(":")[0];
@@ -32,19 +45,19 @@ async function onLoad() {
   if (hash != "") {
     await switchTab(hash);
   } else {
-    await switchTab('Overview');
+    await switchTab(client.config.entrypoint);
   }
 
   if (originalHash.replace(`#`, ``).search(":") != -1) {
-    console.log(`Sub-internal link found. Scrolling into ${originalHash.replace("#", "")}.`);
     document.querySelector(`[id="${originalHash.replace("#", "")}"]`).scrollIntoView();
     location.hash = originalHash;
   }
+
 }
 
 async function switchTab(tabName, redirect) {
 
-  if (!tabName) return new Error("Invalid tab name");
+  if (!tabName) return new Error("Tab name not provided.");
 
   let appendix = ``;
   let path = tabName.replace("#", "");
@@ -66,20 +79,24 @@ async function switchTab(tabName, redirect) {
       return content.text();
     }
   }).then(raw => {
-    content.innerHTML = `${appendix}${raw}`;
+    client.main.innerHTML = `${appendix}${raw}`;
   });
 
   if (tabName != "Overview") {
-    body.classList.remove("centerMode");
+    client.body.classList.remove("centerMode");
   } else {
-    body.classList.add("centerMode");
+    client.body.classList.add("centerMode");
   }
 
-  document.querySelector(`aside a[href="#${currentTab}"]`)?.classList.remove("active");
+  document.querySelector(`aside a[href="#${client.currentTab}"]`)?.classList.remove("active");
   document.querySelector(`aside a[href="#${tabName}"]`)?.classList.add("active");
 
-  previousTab = currentTab;
-  currentTab = tabName;
+  client.previousTab = client.currentTab;
+  client.currentTab = tabName;
+  client.tabHistory.log({
+    tabName: client.currentTab,
+    timestamp: Date.now()
+  });
   location.hash = `#${tabName}`;
 
   let dfnElements = document.querySelectorAll(`dfn`);
@@ -112,6 +129,27 @@ async function switchTab(tabName, redirect) {
     mentionElement.setAttribute(`onclick`, `copySlashCommand(this)`);
   });
 
+  let externalResourceEmbeds = document.querySelectorAll(`div.external-resource`);
+  externalResourceEmbeds.forEach(function(embedElement) {
+    let link = embedElement.children[0].textContent.trim();
+    let text = embedElement.children[1].textContent.trim();
+    embedElement.innerHTML = `<div><b>EMBEDDED CONTENT</b><br><p>${text}</p></div>`;
+
+    let imageContainer = document.createElement("div");
+    imageContainer.style.width = `200px`;
+    let image = document.createElement("img");
+    if (embedElement.classList.contains("googleSheets")) {
+      image.src = "./media/Google Sheets.png";
+    }
+    imageContainer.append(image);
+    embedElement.prepend(imageContainer);
+
+    let button = document.createElement("button");
+    button.innerHTML = `Open resource`;
+    button.onclick = `open('${link}', '_blank')`;
+    embedElement.append(button);
+  });
+
   checkLinks();
 
 }
@@ -130,11 +168,11 @@ function define(dfnElement) {
     hideInfobox(30000);
   }
 
-  if (!isInfoboxVisible() || requestedDfn != infoboxDefinition) {
-    infobox.style.bottom = "5%";
-    document.querySelector(`div#infobox img`).src = `thumbnails/${definition.thumbnail ?? 'logo.png'}`;
-    document.querySelector(`div#infobox p`).innerHTML = definition.definition;
-    infoboxDefinition = requestedDfn;
+  if (!isInfoboxVisible() || requestedDfn != client.infoboxDefinition) {
+    client.infobox.classList.add("visible");
+    client.infobox.thumbnail.src = `thumbnails/${definition.thumbnail ?? 'logo.png'}`;
+    client.infobox.text.innerHTML = definition.definition;
+    client.infoboxDefinition = requestedDfn;
     hideInfobox(30000);
   } else {
     hideInfobox();
@@ -169,7 +207,7 @@ function checkLinks() {
 }
 
 function isInfoboxVisible(requestedDfn) {
-  if (infobox.style.bottom == "-50%" || !infobox.style.bottom) {
+  if (!client.infobox.classList.contains("visible")) {
     return false;
   } else {
     return true;
@@ -178,12 +216,12 @@ function isInfoboxVisible(requestedDfn) {
 
 function hideInfobox(timeout) {
   function hide() {
-    infobox.style.bottom = "-50%";
+    client.infobox.classList.remove("visible");
   }
 
   if (timeout) {
-    if (infoboxTimeout) clearInterval(infoboxTimeout);
-    infoboxTimeout = setTimeout(() => {
+    if (client.infoboxTimeout) clearInterval(client.infoboxTimeout);
+    client.infoboxTimeout = setTimeout(() => {
       hide();
     }, timeout);
   } else {
@@ -192,7 +230,7 @@ function hideInfobox(timeout) {
 }
 
 function goBack() {
-  switchTab(previousTab, false);
+  switchTab(client.previousTab, false);
 }
 
 async function copyText(element) {
@@ -212,32 +250,32 @@ async function copySlashCommand(element) {
 }
 
 async function startLauncher() {
-  launcher.text.innerHTML = `Greetings, agent! Please enter the password required to access this interesting guidebook…`;
+  client.launcher.text.innerHTML = `Greetings, agent! Please enter the password required to access this interesting guidebook…`;
 
   let storedPassword = sessionStorage.getItem("Password");
   if (storedPassword) {
     login(storedPassword);
   } else {
-    launcher.screen.style.display = "flex";
-    launcher.input.focus();
+    client.launcher.screen.style.display = "flex";
+    client.launcher.input.focus();
   }
 }
 
 async function login(password) {
-  dcodeIO.bcrypt.compare(password, config["hashed_password"], function(err, res) {
+  dcodeIO.bcrypt.compare(password, client.config.hashed_password, function(err, res) {
     if (err) {
-      launcher.screen.style.display = "flex";
-      launcher.input.focus();
+      client.launcher.screen.style.display = "flex";
+      client.launcher.input.focus();
       console.error(err);
       return new Error(err);
     };
     if (res === false) {
-      launcher.screen.style.display = "flex";
-      launcher.input.focus();
-      launcher.errorText.innerHTML = `Incorrect password! You might want to keep typing until you get it right.`;
+      client.launcher.screen.style.display = "flex";
+      client.launcher.input.focus();
+      client.launcher.errorText.innerHTML = `Incorrect password! You might want to keep typing until you get it right.`;
     } else if (res === true) {
-      launcher.screen.style.display = "none";
-      launcher.input.focus();
+      client.launcher.screen.style.display = "none";
+      client.launcher.input.focus();
       sessionStorage.setItem("Password", password);
     }
   });
