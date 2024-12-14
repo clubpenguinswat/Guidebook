@@ -10,9 +10,19 @@
     "definition": "The chatbar formation is a horizontal line formation in which players form a line at the bottom edge of the screen. It is often represented by the underscore (\"_\") symbol."
   },
 
+  "club penguin armies": {
+    "thumbnail": null,
+    "definition": "<a href='https://www.cparmies.org'>Club Penguin Armies</a> (CPA) is an army organization and league through which wars and tournaments are officialized."
+  },
+
   "cpa battleground": {
     "thumbnail": null,
-    "definition": "Club Penguin Army Battleground (CPAB) is an army-oriented Club Penguin private server."
+    "definition": "<a href='https://cpabattleground.com'>Club Penguin Army Battleground</a> (CPAB) is an army-oriented Club Penguin private server."
+  },
+
+  "cpa judges": {
+    "thumbnail": null,
+    "definition": "Club Penguin Army Judges (CPAJ) is an organization partnered with the <dfn>Club Penguin Armies</dfn> league that provides judges for battles. CPAJ is independent, and any army league can form a partnership with it."
   },
 
   "discord scouting": {
@@ -28,6 +38,11 @@
   "division command elections": {
     "thumbnail": null,
     "definition": "Division Command Elections (DCE) take place monthly to decide the Division Command members for the new term. One month represents one term. These elections decide 2 leaders for the <dfn>SWAT Divisions</dfn>."
+  },
+
+  "grace period": {
+    "thumbnail": null,
+    "definition": "Grace period is a time when hostilities are prevented. In context of the army map, this is a period during which armies cannot invade each other."
   },
 
   "inside dojo": {
@@ -70,6 +85,11 @@
     "definition": "SWAT Seasons are a series of monthly themed events. Seasons contains missions in which agents have to compete."
   },
 
+  "servers": {
+    "thumbnail": null,
+    "definition": "On the army map, servers are territories or pieces of land. They may or may not be occupied by an army. Historically, servers would also refer to Club Penguin servers of the original game that existed in the past."
+  },
+
   "support ticket": {
     "thumbnail": null,
     "definition": "A support ticket is a thread which only the requestor and staff members may access. The requestor can ask for help in this thread."
@@ -90,9 +110,24 @@
     "definition": "The Top Ten is a ratings system operated by a league. It accounts for an army's performance based on their events. The Top Ten may usually refer to the Weekly rankings, but might also refer to the Monthly rankings."
   },
 
+  "treaty": {
+    "thumbnail": "troopstealing.png",
+    "definition": "A treaty between two armies can either be a force treaty or a peace treaty. A force treaty is imposed by the winning army in a war. Whereas, a peace treaty is agreed mutually by both the armies, inside and outside of war."
+  },
+
   "troopstealing": {
     "thumbnail": "troopstealing.png",
     "definition": "Troopstealing is the act of recruiting a member into your own army who is already enlisted in another. It is often frowned upon."
+  },
+
+  "trophy continent": {
+    "thumbnail": "troopstealing.png",
+    "definition": "A trophy continent is a group of <dfn>trophy lands</dfn>."
+  },
+
+  "trophy lands": {
+    "thumbnail": "troopstealing.png",
+    "definition": "Trophy lands are map <dfn>servers</dfn> that were awarded to one or more winning armies in a map tournament. These are secured, and cannot be competed for or interacted with."
   },
 
   "underground pool": {

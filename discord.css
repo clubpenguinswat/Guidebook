@@ -15,6 +15,10 @@ span.discord-channel:hover {
   background: #5865F2;
 }
 
+span.discord-channel[channelID] {
+  cursor: pointer;
+}
+
 span.slash-command::before {
   content: "/";
 }

@@ -69,15 +69,29 @@ client.settings.close = function() {
   client.modalWrapper.classList.remove("visible");
   client.openedModalElement = null;
 }
+client.settings.reset = function(confirmation) {
+
+  let message = "Are you sure that you would like to reset all settings? All settings will automatically be set to their default options.";
+
+  function perform() {
+    localStorage.removeItem("Settings");
+    applySettingFallbacks();
+    fetchSavedSettings();
+  }
+
+  if (confirmation == true) {
+    if (confirm(message) == true) perform();
+  } else {
+    perform();
+  }
+
+}
 client.settings.inputs.blurEffects = document.querySelector(`input[name="blurEffects"]`);
 client.settings.inputs.animations = document.querySelector(`input[name="animations"]`);
 client.settings.inputs.discordWidget = document.querySelector(`input[name="discordWidget"]`);
+client.settings.inputs.discordWidgetColor = document.querySelector(`input[name="discordWidgetColor"]`);
 client.settings.set = function(option, value) {
   let interprettedValue = value;
-  if (typeof value == Boolean) {
-    if (interprettedValue == true) interprettedValue = "enabled";
-    if (interprettedValue == false) interprettedValue = "disabled";
-  }
   localStorage.writeToObject("Settings", option, interprettedValue);
   if (option == 'blurEffects') {
     if (value == true) client.settings.addBlurEffects();
@@ -88,6 +102,8 @@ client.settings.set = function(option, value) {
   } else if (option == 'discordWidget') {
     if (value == true) client.settings.showDiscordWidget();
     if (value == false) client.settings.hideDiscordWidget();
+  } else if (option == 'discordWidgetColor') {
+    client.settings.setDiscordWidgetColor(value);
   }
   let input = document.querySelector(`input[name="${option}"]`);
   if (input.type == "checkbox") {
@@ -98,9 +114,9 @@ client.settings.set = function(option, value) {
 }
 client.settings.removeBlurEffects = function() {
   document.querySelector("div#launch").style.setProperty("backdrop-filter", "none");
-  document.querySelector("div#launch").style.setProperty("background", "#242424A0");
+  document.querySelector("div#launch").style.setProperty("background", "#242424FF");
   document.querySelector("div#modal_wrapper").style.setProperty("backdrop-filter", "none");
-  document.querySelector("div#modal_wrapper").style.setProperty("background", "#242424FF");
+  document.querySelector("div#modal_wrapper").style.setProperty("background", "#242424A0");
 };
 client.settings.addBlurEffects = function() {
   document.querySelector("div#launch").style.setProperty("backdrop-filter", "blur(5px)");
@@ -126,23 +142,32 @@ client.settings.showDiscordWidget = function() {
 client.settings.hideDiscordWidget = function() {
   Discord.crate.hide();
 };
+client.settings.setDiscordWidgetColor = function(value) {
+  Discord.crate.options.color = value;
+}
 
 client.modalWrapper.addEventListener("click", function() {
   client.openedModalElement.close();
   this.classList.remove("visible");
 });
 
-localStorage.itemFallback("Settings", JSON.stringify({}));
-localStorage.propertyFallback("Settings", "blurEffects", "enabled");
-localStorage.propertyFallback("Settings", "animations", "enabled");
-localStorage.propertyFallback("Settings", "discordWidget", "enabled");
+function applySettingFallbacks() {
+  localStorage.itemFallback("Settings", JSON.stringify({}));
+  localStorage.propertyFallback("Settings", "blurEffects", true);
+  localStorage.propertyFallback("Settings", "animations", true);
+  localStorage.propertyFallback("Settings", "discordWidget", true);
+  localStorage.propertyFallback("Settings", "discordWidgetColor", "#006900");
+}
 
-if (localStorage.getItem("Settings")) {
-  let Settings = JSON.parse(localStorage.getItem("Settings"));
-  for (const key in Settings) {
-    client.settings.set(key, Settings[key]);
+function fetchSavedSettings() {
+  if (localStorage.getItem("Settings")) {
+    let Settings = JSON.parse(localStorage.getItem("Settings"));
+    for (const key in Settings) {
+      client.settings.set(key, Settings[key]);
+    }
   }
 }
+fetchSavedSettings();
 
 async function onLoad() {
 
@@ -259,6 +284,11 @@ async function switchTab(tabName, redirect) {
   forEachElement(`span.slash-command`, function(element) {
     element.setAttribute(`title`, `Click to copy`);
     element.setAttribute(`onclick`, `copySlashCommand(this)`);
+  });
+
+  forEachElement(`span.discord-channel[channelID]`, function(element) {
+    element.setAttribute(`title`, `Click to view`);
+    element.setAttribute(`onclick`, `Discord.onChannelMentionClick(this)`);
   });
 
   forEachElement(`a[href^="http:"], a[href^="https:"]`, function(element) {

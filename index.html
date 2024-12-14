@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="./mobile.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer></script>
-    <script src="./widgetbot.js" defer></script>
+    <script src="./discord.js" defer></script>
     <script src="./bcrypt.min.js" defer></script>
     <script src="./app.js" defer></script>
     <script src="./sessionManager.js" defer></script>
@@ -58,10 +58,23 @@
         <br>
         <a href="#Essentials/Leading_Events">Leading Events</a>
       </div>
+      <a href="#Armies_Explained">Armies Explained</a>
+      <br>
+      <div class="indented">
+        <a href="#Armies_Explained/Army_Map">Army Map</a>
+        <br>
+        <a href="#Armies_Explained/Wars">Wars</a>
+        <br>
+        <a href="#Armies_Explained/Tournaments">Tournaments</a>
+        <br>
+        <a href="#Armies_Explained/Judging">Judging</a>
+      </div>
       <a href="#SWAT_Bot">SWAT Bot</a>
       <br>
       <div class="indented">
         <a href="#SWAT_Bot/History">History</a>
+        <br>
+        <a href="#SWAT_Bot/Commands">Commands</a>
       </div>
       <a href="#Promotions">Promotions</a>
       <br>
@@ -102,29 +115,37 @@
       <b>SETTINGS</b>
       <p>All changes are automatically saved on this browser, and will reapply once you revisit this guidebook. Reauthorization is not required for these settings to apply.</p>
       <br>
-      <input name="blurEffects" type="checkbox" onclick="client.settings.set('blurEffects', this.checked)"></input>
+      <input name="blurEffects" type="checkbox" oninput="client.settings.set('blurEffects', this.checked)"></input>
       <label>Enable blur effects</label>
       <br>
       <small>Disabling blur effects drastically reduces lag in modals and popups.</small>
       <br>
       <br>
-      <input name="animations" type="checkbox" onclick="client.settings.set('animations', this.checked)"></input>
+      <input name="animations" type="checkbox" oninput="client.settings.set('animations', this.checked)"></input>
       <label>Enable animations</label>
       <br>
       <small>Disabling animations can improve performance.</small>
       <br>
       <br>
-      <input name="discordWidget" type="checkbox" onclick="client.settings.set('discordWidget', this.checked)"></input>
+      <input name="discordWidget" type="checkbox" oninput="client.settings.set('discordWidget', this.checked)"></input>
       <label>Show Discord widget</label>
       <br>
       <small>Disabling the Discord widget will hide the miniature Discord app launcher on the corner of the screen.</small>
       <br>
+      <br>
+      <label>Discord widget color</label>
+      <input name="discordWidgetColor" type="color" class="square" oninput="client.settings.set('discordWidgetColor', this.value)" style="float: right;"></input>
+      <br>
+      <small>Set a custom color for the Discord widget icon.</small>
+      <br>
+      <br>
+      <button class="danger" onclick="client.settings.reset(true)">Reset settings</button>
       <hr>
       <b>SESSIONS</b>
       <br>
-      <p>Your tab history includes your <b id="sessionsRecordCount">…</b> last visited articles.</p>
+      <p>Your tab history includes <b id="sessionsRecordCount">…</b> articles that you recently visited.</p>
       <button onclick="client.settings.copySessionHistory(this)">Copy session history to clipboard</button>
-      <button class="danger" onclick="client.settings.deleteSessionHistory('confirmation')">Delete session history</button>
+      <button class="danger" onclick="client.settings.deleteSessionHistory(true)">Delete session history</button>
     </div>
 
     <div id="modal_wrapper"></div>

@@ -13,9 +13,7 @@ Discord.createWidget({
   channel: '715198770413043854' // #💬】general-chat
 });
 
-setTimeout(() => {
-  Discord.createNotification({
-    content: "Good work, agent! I appreciate that you are reading through this guide thoroughly.",
-    timeout: 10000
-  });
-}, 60000);
+Discord.onChannelMentionClick = function(mentionElement) {
+  let channelID = mentionElement.getAttribute("channelID");
+  Discord.crate.navigate(channelID);
+}
