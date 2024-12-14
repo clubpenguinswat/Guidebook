@@ -26,7 +26,7 @@ body {
 @media screen and (min-width: 1001px) {
   body {
     background: radial-gradient(circle at top, #0069004F 5%, transparent 25%);
-    animation-name: Lamp;
+    /* animation-name: Lamp; */
     animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-direction: alternate-reverse;
@@ -37,6 +37,10 @@ body.centerMode {
   place-items: center;
 }
 
+#menuToggler {
+  z-index: 1001;
+}
+
 aside {
   position: fixed;
   top: 0;
@@ -45,6 +49,23 @@ aside {
   height: 100%;
   padding: 15px;
   background: #00000080;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+aside div#floatBottom {
+  width: 100%;
+  margin-left: -15px;
+  background: #FFFFFF20;
+  position: absolute;
+  bottom: 30px;
+}
+
+aside div#floatBottom button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 0;
+  text-align: left;
 }
 
 main {
@@ -68,12 +89,12 @@ img:not(.unsetBorderRadius) {
   border-radius: 10px;
 }
 
-img.glowOnHover {
+img.glowOnHover.animate {
   transition: 100ms;
 }
 
 @media screen and (min-width: 1001px) {
-  img.glowOnHover:hover {
+  img.glowOnHover.animate:hover {
     filter: drop-shadow(0 0 100px #006900);
   }
 }
@@ -135,6 +156,62 @@ main div.textblock {
   width: 100%;
 }
 
+a {
+  color: #85C4FF;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 100ms;
+}
+
+a:hover {
+  color: #5594CF;
+}
+
+a:active,
+a:focus {
+  color: #346EA5;
+}
+
+a[onclick="goBack()"] {
+  width: 100%;
+}
+
+button {
+  background: #00000080;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  cursor: pointer;
+  transition: 100ms;
+}
+
+button:hover {
+  background: #00000040;
+}
+
+button:active {
+  background: #00000020;
+}
+
+button + button {
+  margin-left: 10px;
+}
+
+input {
+  border: none;
+  outline: 0px #1A1B1A solid;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  transition: 100ms;
+}
+
+input:focus {
+  outline: 5px #1A1B1A solid;
+}
+
 button#menuToggler {
   position: fixed;
   top: 5%;
@@ -160,7 +237,7 @@ div#launch {
   background: #242424E0;
   place-items: center;
   text-align: center;
-  backdrop-filter: blur(5px);
+  z-index: 3000;
 }
 
 div#launch img {
@@ -173,46 +250,61 @@ div#launch p {
   width: 100%;
 }
 
-a {
-  color: #85C4FF;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 100ms;
-}
-
-a:hover {
-  color: #5594CF;
-}
-
-a:active,
-a:focus {
-  color: #346EA5;
-}
-
-a[onclick="goBack()"] {
+div#modal_wrapper {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #00000080;
   width: 100%;
+  height: 100%;
+  z-index: 2000;
 }
 
-button {
-  border: none;
-  border-radius: 5px;
-  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  cursor: pointer;
-  transition: 100ms;
+div#modal_wrapper.visible {
+  display: initial;
 }
 
-input {
-  border: none;
-  outline: 0px #1A1B1A solid;
-  border-radius: 5px;
-  padding: 10px;
-  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  transition: 100ms;
+div.modal {
+  display: none;
+  position: fixed;
+  top: 25%;
+  left: 25%;
+  background: #000000F0;
+  width: 50%;
+  height: 50%;
+  padding: 30px;
+  border-radius: 15px;
+  overflow-x: auto;
+  z-index: 2001;
 }
 
-input:focus {
-  outline: 5px #1A1B1A solid;
+div.modal.visible {
+  display: initial;
+}
+
+div.modal button {
+  background: #FFFFFF20;
+}
+
+div.modal button:hover {
+  background: #FFFFFF40;
+}
+
+div.modal button:active {
+  background: #FFFFFF60;
+}
+
+button.danger {
+  background: #E72300A0 !important;
+}
+
+button.danger:hover {
+  background: #E7230080 !important;
+}
+
+button.danger:active {
+  background: #E7230040 !important;
 }
 
 div#infobox {
@@ -225,7 +317,7 @@ div#infobox {
   display: flex;
   flex-direction: row;
   border-radius: 10px;
-  transition: bottom 250ms;
+  overflow-x: auto;
 }
 
 div#infobox.visible {
@@ -410,7 +502,7 @@ code {
 
 dfn {
   color: #DAC798;
-  cursor: pointer;
+  cursor: help;
   transition: 100ms;
 }
 
@@ -441,4 +533,35 @@ kbd {
 kbd:active {
   border-bottom: none;
   filter: brightness(60%);
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  opacity: 0.25;
+}
+
+table {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-collapse: collapse;
+  min-width: 50%;
+}
+
+table, td, th {
+  border: 1px #FFFFFF40 solid;
+}
+
+td, th {
+  padding: 10px;
+}
+
+th {
+  background: #FFFFFF10;
+  text-align: center;
+}
+
+td {
+  text-align: left;
+  vertical-align: top;
 }

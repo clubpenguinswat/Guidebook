@@ -18,9 +18,12 @@
     <link rel="stylesheet" href="./discord.css">
     <link rel="stylesheet" href="./mobile.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer></script>
+    <script src="./widgetbot.js" defer></script>
     <script src="./bcrypt.min.js" defer></script>
     <script src="./app.js" defer></script>
     <script src="./sessionManager.js" defer></script>
+    <script src="./mobile.js" defer></script>
 
   </head>
 
@@ -68,6 +71,10 @@
       <br>
       <a href="#Recruitment_Regiment">Recruitment Regiment</a>
 
+      <div id="floatBottom">
+        <button onclick="client.settings.open()">Settings</button>
+      </div>
+
     </aside>
 
     <main>
@@ -79,7 +86,7 @@
     <div id="infobox">
       <img class="unsetBorderRadius" src="logo.png" alt="infobox thumbnail"></img>
       <p>Loading…</p>
-      <button onclick="hideInfobox()">×</button>
+      <button onclick="client.infobox.hide()">×</button>
     </div>
 
     <div id="launch">
@@ -90,6 +97,37 @@
       <br>
       <small class="error"></small>
     </div>
+
+    <div id="settings" class="modal">
+      <b>SETTINGS</b>
+      <p>All changes are automatically saved on this browser, and will reapply once you revisit this guidebook. Reauthorization is not required for these settings to apply.</p>
+      <br>
+      <input name="blurEffects" type="checkbox" onclick="client.settings.set('blurEffects', this.checked)"></input>
+      <label>Enable blur effects</label>
+      <br>
+      <small>Disabling blur effects drastically reduces lag in modals and popups.</small>
+      <br>
+      <br>
+      <input name="animations" type="checkbox" onclick="client.settings.set('animations', this.checked)"></input>
+      <label>Enable animations</label>
+      <br>
+      <small>Disabling animations can improve performance.</small>
+      <br>
+      <br>
+      <input name="discordWidget" type="checkbox" onclick="client.settings.set('discordWidget', this.checked)"></input>
+      <label>Show Discord widget</label>
+      <br>
+      <small>Disabling the Discord widget will hide the miniature Discord app launcher on the corner of the screen.</small>
+      <br>
+      <hr>
+      <b>SESSIONS</b>
+      <br>
+      <p>Your tab history includes your <b id="sessionsRecordCount">…</b> last visited articles.</p>
+      <button onclick="client.settings.copySessionHistory(this)">Copy session history to clipboard</button>
+      <button class="danger" onclick="client.settings.deleteSessionHistory('confirmation')">Delete session history</button>
+    </div>
+
+    <div id="modal_wrapper"></div>
 
   </body>
 

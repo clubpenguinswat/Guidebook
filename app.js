@@ -1,6 +1,8 @@
 const client = {
   config: undefined,
   body: document.body,
+  menuToggler: document.querySelector("button#menuToggler"),
+  aside: document.querySelector("aside"),
   main: document.querySelector("main"),
   infobox: document.querySelector("div#infobox"),
   tabHistory: [],
@@ -13,12 +15,134 @@ const client = {
     text: document.querySelector("div#launch p"),
     input: document.querySelector("div#launch input"),
     errorText: document.querySelector("div#launch small.error")
-  }
+  },
+  settings: document.querySelector("#settings"),
+  modalWrapper: document.querySelector("#modal_wrapper"),
+  openedModalElement: null
 };
+
+localStorage.__proto__.itemFallback = function(item, defaultValue) {
+  if (!localStorage.getItem(item)) localStorage.setItem(item, defaultValue);
+}
+localStorage.__proto__.propertyFallback = function(item, property, fallback) {
+  let object = JSON.parse(localStorage.getItem(item)) ?? {};
+  if (object[property] == undefined) {
+    object[property] = fallback;
+    localStorage.setItem(item, JSON.stringify(object));
+  }
+}
+localStorage.__proto__.writeToObject = function(item, property, value) {
+  let object = JSON.parse(localStorage.getItem(item)) ?? {};
+  object[property] = value;
+  localStorage.setItem(item, JSON.stringify(object));
+}
 
 client.infobox.thumbnail = document.querySelector("div#infobox img");
 client.infobox.text = document.querySelector("div#infobox p");
 client.infobox.button = document.querySelector("div#infobox button");
+client.infobox.hide = function(timeout) {
+  function hide() {
+    client.infobox.classList.remove("visible");
+  }
+
+  if (timeout) {
+    if (client.infoboxTimeout) clearInterval(client.infoboxTimeout);
+    client.infoboxTimeout = setTimeout(() => {
+      hide();
+    }, timeout);
+  } else {
+    hide();
+  }
+}
+
+client.settings.inputs = {};
+client.settings.sessions = {
+  recordCount: document.querySelector("b#sessionsRecordCount")
+};
+client.settings.open = function() {
+  client.settings.classList.add("visible");
+  client.modalWrapper.classList.add("visible");
+  client.openedModalElement = this;
+}
+client.settings.close = function() {
+  client.settings.classList.remove("visible");
+  client.modalWrapper.classList.remove("visible");
+  client.openedModalElement = null;
+}
+client.settings.inputs.blurEffects = document.querySelector(`input[name="blurEffects"]`);
+client.settings.inputs.animations = document.querySelector(`input[name="animations"]`);
+client.settings.inputs.discordWidget = document.querySelector(`input[name="discordWidget"]`);
+client.settings.set = function(option, value) {
+  let interprettedValue = value;
+  if (typeof value == Boolean) {
+    if (interprettedValue == true) interprettedValue = "enabled";
+    if (interprettedValue == false) interprettedValue = "disabled";
+  }
+  localStorage.writeToObject("Settings", option, interprettedValue);
+  if (option == 'blurEffects') {
+    if (value == true) client.settings.addBlurEffects();
+    if (value == false) client.settings.removeBlurEffects();
+  } else if (option == 'animations') {
+    if (value == true) client.settings.addAnimations();
+    if (value == false) client.settings.removeAnimations();
+  } else if (option == 'discordWidget') {
+    if (value == true) client.settings.showDiscordWidget();
+    if (value == false) client.settings.hideDiscordWidget();
+  }
+  let input = document.querySelector(`input[name="${option}"]`);
+  if (input.type == "checkbox") {
+    input.checked = value;
+  } else {
+    input.value = value;
+  }
+}
+client.settings.removeBlurEffects = function() {
+  document.querySelector("div#launch").style.setProperty("backdrop-filter", "none");
+  document.querySelector("div#launch").style.setProperty("background", "#242424A0");
+  document.querySelector("div#modal_wrapper").style.setProperty("backdrop-filter", "none");
+  document.querySelector("div#modal_wrapper").style.setProperty("background", "#242424FF");
+};
+client.settings.addBlurEffects = function() {
+  document.querySelector("div#launch").style.setProperty("backdrop-filter", "blur(5px)");
+  document.querySelector("div#launch").style.setProperty("background", "#242424A0");
+  document.querySelector("div#modal_wrapper").style.setProperty("backdrop-filter", "blur(5px)");
+  document.querySelector("div#modal_wrapper").style.setProperty("background", "#242424A0");
+};
+client.settings.removeAnimations = function() {
+  document.querySelector("body").style.setProperty("background", "none");
+  document.querySelector("body").style.setProperty("animation-duration", "0");
+  document.querySelector("div#infobox").style.setProperty("transition", "bottom 0ms");
+  document.querySelector("img.glowOnHover").classList.remove("animate");
+};
+client.settings.addAnimations = function() {
+  document.querySelector("body").style.setProperty("background", "radial-gradient(circle at top, #0069004F 5%, transparent 25%)");
+  document.querySelector("body").style.setProperty("animation-duration", "3s");
+  document.querySelector("div#infobox").style.setProperty("transition", "bottom 250ms");
+  document.querySelector("img.glowOnHover").classList.add("animate");
+};
+client.settings.showDiscordWidget = function() {
+  Discord.crate.show();
+};
+client.settings.hideDiscordWidget = function() {
+  Discord.crate.hide();
+};
+
+client.modalWrapper.addEventListener("click", function() {
+  client.openedModalElement.close();
+  this.classList.remove("visible");
+});
+
+localStorage.itemFallback("Settings", JSON.stringify({}));
+localStorage.propertyFallback("Settings", "blurEffects", "enabled");
+localStorage.propertyFallback("Settings", "animations", "enabled");
+localStorage.propertyFallback("Settings", "discordWidget", "enabled");
+
+if (localStorage.getItem("Settings")) {
+  let Settings = JSON.parse(localStorage.getItem("Settings"));
+  for (const key in Settings) {
+    client.settings.set(key, Settings[key]);
+  }
+}
 
 async function onLoad() {
 
@@ -27,11 +151,13 @@ async function onLoad() {
   }).then(raw => {
     client.config = JSON.parse(raw);
   });
+
   await fetch(`./definitions.json`).then(json => {
     return json.text();
   }).then(raw => {
     definitions = JSON.parse(raw);
   });
+
   await goToURL();
   await startLauncher();
 
@@ -52,6 +178,15 @@ async function goToURL() {
     document.querySelector(`[id="${originalHash.replace("#", "")}"]`).scrollIntoView();
     location.hash = originalHash;
   }
+
+}
+
+async function forEachElement(query, callback) {
+
+  let elements = document.querySelectorAll(query);
+  elements.forEach(function(element) {
+    callback(element);
+  })
 
 }
 
@@ -97,36 +232,49 @@ async function switchTab(tabName, redirect) {
     tabName: client.currentTab,
     timestamp: Date.now()
   });
+  client.settings.updateInformation();
   location.hash = `#${tabName}`;
 
-  let dfnElements = document.querySelectorAll(`dfn`);
-  dfnElements.forEach(function(dfnElement) {
-    dfnElement.setAttribute(`title`, `Define "${dfnElement.innerText}"`);
-    dfnElement.setAttribute(`onclick`, `define(this)`);
+  forEachElement("dfn", function(element) {
+    element.setAttribute(`title`, `Define "${element.innerText}"`);
+    element.setAttribute(`onclick`, `define(this)`);
   });
 
-  let textblocks = document.querySelectorAll(`div.textblock`);
-  textblocks.forEach(function(textblock) {
-    textblock.innerHTML = textblock.innerHTML.trim();
+  forEachElement("div.textblock", function(element) {
+    element.innerHTML = element.innerHTML.trim();
 
     let copyButton = document.createElement("button");
     copyButton.innerHTML = "Copy";
     copyButton.setAttribute("onclick", "copyText(this)");
-    textblock.prepend(copyButton);
+    element.prepend(copyButton);
   });
 
-  let linkedContent = document.querySelectorAll(`[id*=":"]`);
-  linkedContent.forEach(function(linkedItem) {
+  forEachElement(`[id*=":"]`, function(element) {
     let copyButton = document.createElement("button");
     copyButton.innerHTML = "Copy Link";
-    copyButton.setAttribute("onclick", `copyLink("${linkedItem.id}")`);
-    linkedItem.appendChild(copyButton);
+    copyButton.setAttribute("onclick", `copyLink("${element.id}")`);
+    element.appendChild(copyButton);
   });
 
-  let slashCommandMentions = document.querySelectorAll(`span.slash-command`);
-  slashCommandMentions.forEach(function(mentionElement) {
-    mentionElement.setAttribute(`title`, `Click to copy`);
-    mentionElement.setAttribute(`onclick`, `copySlashCommand(this)`);
+  forEachElement(`span.slash-command`, function(element) {
+    element.setAttribute(`title`, `Click to copy`);
+    element.setAttribute(`onclick`, `copySlashCommand(this)`);
+  });
+
+  forEachElement(`a[href^="http:"], a[href^="https:"]`, function(element) {
+    element.setAttribute("title", "This external link will open in a new tab.");
+    element.setAttribute("target", "_blank");
+  });
+
+  forEachElement(`a[href^="#"]`, function(element) {
+    let targetTabName = element.getAttribute("href").replace("#", "");
+    if (!element.classList.contains("redirect")) {
+      element.setAttribute("title", "This internal link will redirect you to another resource.");
+      element.setAttribute("onclick", `switchTab("${targetTabName}")`);
+    } else {
+      element.setAttribute("title", "This internal link will switch you to another resource.");
+      element.setAttribute("onclick", `switchTab("${targetTabName}", true)`);
+    }
   });
 
   let externalResourceEmbeds = document.querySelectorAll(`div.external-resource`);
@@ -146,11 +294,11 @@ async function switchTab(tabName, redirect) {
 
     let button = document.createElement("button");
     button.innerHTML = `Open resource`;
-    button.onclick = `open('${link}', '_blank')`;
+    button.addEventListener("click", function() {
+      open(`${link}`, '_blank');
+    });
     embedElement.append(button);
   });
-
-  checkLinks();
 
 }
 
@@ -163,19 +311,19 @@ function define(dfnElement) {
     definition = {
       definition: `Error! Could not find a definition for <b>${requestedDfn}</b>.`
     };
-    hideInfobox(5000);
+    client.infobox.hide(5000);
   } else {
-    hideInfobox(30000);
+    client.infobox.hide(30000);
   }
 
-  if (!isInfoboxVisible() || requestedDfn != client.infoboxDefinition) {
+  if (!client.infobox.classList.contains("visible") || requestedDfn != client.infoboxDefinition) {
     client.infobox.classList.add("visible");
     client.infobox.thumbnail.src = `thumbnails/${definition.thumbnail ?? 'logo.png'}`;
     client.infobox.text.innerHTML = definition.definition;
     client.infoboxDefinition = requestedDfn;
-    hideInfobox(30000);
+    client.infobox.hide(30000);
   } else {
-    hideInfobox();
+    client.infobox.hide();
   }
 
   let dfnElements = document.querySelectorAll(`div#infobox dfn`);
@@ -186,59 +334,18 @@ function define(dfnElement) {
 
 }
 
-function checkLinks() {
-  let externalLinks = document.querySelectorAll(`a[href^="http:"], a[href^="https:"]`);
-  externalLinks.forEach(function(link) {
-    link.setAttribute("title", "This external link will open in a new tab.");
-    link.setAttribute("target", "_blank");
-  });
-
-  let internalLinks = document.querySelectorAll(`a[href^="#"]`);
-  internalLinks.forEach(function(link) {
-    let targetTabName = link.getAttribute("href").replace("#", "");
-    if (!link.classList.contains("redirect")) {
-      link.setAttribute("title", "This internal link will redirect you to another resource.");
-      link.setAttribute("onclick", `switchTab("${targetTabName}")`);
-    } else {
-      link.setAttribute("title", "This internal link will switch you to another resource.");
-      link.setAttribute("onclick", `switchTab("${targetTabName}", true)`);
-    }
-  });
-}
-
-function isInfoboxVisible(requestedDfn) {
-  if (!client.infobox.classList.contains("visible")) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-function hideInfobox(timeout) {
-  function hide() {
-    client.infobox.classList.remove("visible");
-  }
-
-  if (timeout) {
-    if (client.infoboxTimeout) clearInterval(client.infoboxTimeout);
-    client.infoboxTimeout = setTimeout(() => {
-      hide();
-    }, timeout);
-  } else {
-    hide();
-  }
-}
-
 function goBack() {
   switchTab(client.previousTab, false);
 }
 
 async function copyText(element) {
+
   await navigator.clipboard.writeText(element.parentElement.textContent.replace("Copy", "").trim());
   element.innerHTML = "Copied";
   setTimeout(() => {
     element.innerHTML = "Copy";
   }, 5000);
+
 }
 
 async function copyLink(id) {
@@ -250,6 +357,7 @@ async function copySlashCommand(element) {
 }
 
 async function startLauncher() {
+
   client.launcher.text.innerHTML = `Greetings, agent! Please enter the password required to access this interesting guidebook…`;
 
   let storedPassword = sessionStorage.getItem("Password");
@@ -259,9 +367,11 @@ async function startLauncher() {
     client.launcher.screen.style.display = "flex";
     client.launcher.input.focus();
   }
+
 }
 
 async function login(password) {
+
   dcodeIO.bcrypt.compare(password, client.config.hashed_password, function(err, res) {
     if (err) {
       client.launcher.screen.style.display = "flex";
@@ -269,6 +379,7 @@ async function login(password) {
       console.error(err);
       return new Error(err);
     };
+
     if (res === false) {
       client.launcher.screen.style.display = "flex";
       client.launcher.input.focus();
@@ -279,4 +390,5 @@ async function login(password) {
       sessionStorage.setItem("Password", password);
     }
   });
+
 }

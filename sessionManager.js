@@ -19,3 +19,26 @@ client.tabHistory.log = function(item) {
   client.tabHistory.push(item);
   localStorage.setItem("Sessions", JSON.stringify(appendToSessionsArray(item)));
 }
+
+client.settings.updateInformation = async function() {
+  client.settings.sessions.recordCount.innerHTML = JSON.parse(localStorage.getItem("Sessions")).length;
+}
+
+client.settings.copySessionHistory = async function(button) {
+  button.originalInnerHTML = button.innerHTML;
+  button.innerHTML = "Copied!";
+  setTimeout(() => {
+    button.innerHTML = button.originalInnerHTML;
+  }, 5000);
+  await navigator.clipboard.writeText(localStorage.getItem("Sessions"));
+}
+
+client.settings.deleteSessionHistory = async function() {
+  localStorage.setItem("Sessions", "[]");
+  confirmationMessage = "Are you sure that you would like to erase your entire session history? This action is not recommended and is irreversible! Make sure to save your session history elsewhere, just in case.";
+  if (confirm(confirmationMessage) == true) {
+    client.settings.updateInformation();
+  }
+}
+
+client.settings.updateInformation();

@@ -85,6 +85,11 @@
     "definition": "The SWAT Corporation is the authority working behind the army. It consists of staff members, Staff-in-Training, and advisors. It is the chief decision-making workplace."
   },
 
+  "top ten": {
+    "thumbnail": "communication.png",
+    "definition": "The Top Ten is a ratings system operated by a league. It accounts for an army's performance based on their events. The Top Ten may usually refer to the Weekly rankings, but might also refer to the Monthly rankings."
+  },
+
   "troopstealing": {
     "thumbnail": "troopstealing.png",
     "definition": "Troopstealing is the act of recruiting a member into your own army who is already enlisted in another. It is often frowned upon."
