@@ -1,4 +1,3 @@
-client.settings.fetchSaved();
 
 async function onLoad() {
 
@@ -14,6 +13,12 @@ async function onLoad() {
     definitions = JSON.parse(raw);
   });
 
+  await Discord.createWidget({
+    server: '715178450716983326', // SWATRulers
+    channel: '715198770413043854' // #💬】general-chat
+  });
+  await client.settings.applyFallbacks();
+  await client.settings.fetchSaved();
   await goToURL();
   await startLauncher();
 
