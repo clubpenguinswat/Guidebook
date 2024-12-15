@@ -31,6 +31,8 @@ const client = {
     "Server_Tickets",
     "Diplomacy",
     "Recruitment_Regiment",
+    "Documents",
+    "Documents/CPAJ_Judging_Guide",
   ],
   preloadedContent: {},
   infoboxTimeout: null,
