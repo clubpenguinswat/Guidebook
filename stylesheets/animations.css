@@ -1,0 +1,23 @@
+@keyframes Lamp {
+  0%   {  background: radial-gradient(circle at top, #0069004F 0.5%, transparent 45%);  }
+  5%   {  background: radial-gradient(circle at top, #0069004F 0.75%, transparent 45.5%);  }
+  10%  {  background: radial-gradient(circle at top, #0069004F 1%, transparent 46%);  }
+  15%  {  background: radial-gradient(circle at top, #0069004F 1.25%, transparent 46.5%);  }
+  20%  {  background: radial-gradient(circle at top, #0069004F 1.5%, transparent 47%);  }
+  25%  {  background: radial-gradient(circle at top, #0069004F 1.75%, transparent 47.5%);  }
+  30%  {  background: radial-gradient(circle at top, #0069004F 2%, transparent 48%);  }
+  35%  {  background: radial-gradient(circle at top, #0069004F 2.25%, transparent 48.5%);  }
+  40%  {  background: radial-gradient(circle at top, #0069004F 2.5%, transparent 49%);  }
+  45%  {  background: radial-gradient(circle at top, #0069004F 2.75%, transparent 49.5%);  }
+  50%  {  background: radial-gradient(circle at top, #0069004F 3%, transparent 50%);  }
+  55%  {  background: radial-gradient(circle at top, #0069004F 3.25%, transparent 50.5%);  }
+  60%  {  background: radial-gradient(circle at top, #0069004F 3.5%, transparent 51%);  }
+  65%  {  background: radial-gradient(circle at top, #0069004F 3.75%, transparent 51.5%);  }
+  70%  {  background: radial-gradient(circle at top, #0069004F 4%, transparent 52%);  }
+  75%  {  background: radial-gradient(circle at top, #0069004F 4.25%, transparent 52.5%);  }
+  80%  {  background: radial-gradient(circle at top, #0069004F 4.5%, transparent 53%);  }
+  85%  {  background: radial-gradient(circle at top, #0069004F 4.75%, transparent 53.5%);  }
+  90%  {  background: radial-gradient(circle at top, #0069004F 5%, transparent 54%);  }
+  95%  {  background: radial-gradient(circle at top, #0069004F 5.25%, transparent 54.5%);  }
+  100% {  background: radial-gradient(circle at top, #0069004F 5.5%, transparent 55%);  }
+}

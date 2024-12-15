@@ -1,5 +1,15 @@
 {
 
+  "allied support": {
+    "thumbnail": null,
+    "definition": "Allied support is help received from <dfn>allies</dfn>, but in some contexts may also include <dfn>visitors</dfn>."
+  },
+
+  "allies": {
+    "thumbnail": null,
+    "definition": "Allies are used to refer to armies that are friendly (\"allied armies\"). The singular form of this noun is ally."
+  },
+
   "army branches": {
     "thumbnail": null,
     "definition": "Army branches are the sub-forces of an army. These are popularly known as \"divisions\" in the army community. These may also be understood as the branches of an army."
@@ -10,14 +20,29 @@
     "definition": "The chatbar formation is a horizontal line formation in which players form a line at the bottom edge of the screen. It is often represented by the underscore (\"_\") symbol."
   },
 
+  "club penguin": {
+    "thumbnail": null,
+    "definition": "The (original) Club Penguin was a massively multiplayer online game that ran from 2005 to 2017. The game was the original version before the arrival of <dfn>Club Penguin private servers</dfn>."
+  },
+
   "club penguin armies": {
     "thumbnail": null,
     "definition": "<a href='https://www.cparmies.org'>Club Penguin Armies</a> (CPA) is an army organization and league through which wars and tournaments are officialized."
   },
 
+  "club penguin private servers": {
+    "thumbnail": null,
+    "definition": "A Club Penguin private server (CPPS) is a fan recreation of the original game of <dfn>Club Penguin</dfn>. <dfn>CPA Battleground</dfn> and <dfn>CP Journey</dfn> are two popular examples of such games."
+  },
+
   "cpa battleground": {
     "thumbnail": null,
-    "definition": "<a href='https://cpabattleground.com'>Club Penguin Army Battleground</a> (CPAB) is an army-oriented Club Penguin private server."
+    "definition": "<a href='https://cpabattleground.com'>Club Penguin Army Battleground</a> (CPAB) is an army-oriented, which is one of many <dfn>Club Penguin private servers</dfn>. It is known for uniquely creating a battlefield just for armies."
+  },
+
+  "cp journey": {
+    "thumbnail": null,
+    "definition": "Club Penguin Journey (CPJ), also known as CP Journey, is an HTML5 <dfn>Club Penguin private server</dfn> that copies an older version of the original game of <dfn>Club Penguin</dfn>, and runs on unseen in-game features."
   },
 
   "cpa judges": {
@@ -40,9 +65,14 @@
     "definition": "Division Command Elections (DCE) take place monthly to decide the Division Command members for the new term. One month represents one term. These elections decide 2 leaders for the <dfn>SWAT Divisions</dfn>."
   },
 
+  "freeland": {
+    "thumbnail": null,
+    "definition": "A freeland is a territory on the <a href='#Armies_Explained/Army_Map'>army map</a> that is not occupied by any army. This server can be easily invaded by an eligible army."
+  },
+
   "grace period": {
     "thumbnail": null,
-    "definition": "Grace period is a time when hostilities are prevented. In context of the army map, this is a period during which armies cannot invade each other."
+    "definition": "Grace period is a time when hostilities are prevented. In context of the <a href='#Armies_Explained/Army_Map'>army map</a>, this is a period during which armies cannot invade each other."
   },
 
   "inside dojo": {
@@ -53,6 +83,21 @@
   "inside mine": {
     "thumbnail": null,
     "definition": "Inside Mine is the Mine room which is found after entering the building within the Mine Shack. It cannot be directly accessed from the map."
+  },
+
+  "map war": {
+    "thumbnail": null,
+    "definition": "A map war is a conflict staged on the <a href='#Armies_Explained/Army_Map'>army map</a>. It can have a war term to impose a force <dfn>treaty</dfn>, and land is gained or lost in such a war."
+  },
+
+  "non-aggression pact": {
+    "thumbnail": null,
+    "definition": "A non-aggression pact (NAP) is a <dfn>treaty</dfn> that causes peace between two parties. The terms of such a treaty have to include acts of non-aggression to be qualified as a NAP."
+  },
+
+  "no-show": {
+    "thumbnail": null,
+    "definition": "A no-show is a noun used to describe a battle that was not shown up to by an army. It can also be used as a verb to infer that was not shown up to by an army."
   },
 
   "pre-room": {
@@ -85,9 +130,14 @@
     "definition": "SWAT Seasons are a series of monthly themed events. Seasons contains missions in which agents have to compete."
   },
 
+  "server transfers": {
+    "thumbnail": null,
+    "definition": "A server transfer is a transaction of land or <dfn>servers</dfn> between two armies. These transfers can be forceful or mutually agreed to. Trades also qualify as server transfers."
+  },
+
   "servers": {
     "thumbnail": null,
-    "definition": "On the army map, servers are territories or pieces of land. They may or may not be occupied by an army. Historically, servers would also refer to Club Penguin servers of the original game that existed in the past."
+    "definition": "On the <a href='#Armies_Explained/Army_Map'>army map</a>, servers are territories or pieces of land. They may or may not be occupied by an army. Historically, servers would also refer to <dfn>Club Penguin</dfn> servers of the original game that existed in the past."
   },
 
   "support ticket": {
@@ -106,12 +156,12 @@
   },
 
   "top ten": {
-    "thumbnail": "communication.png",
+    "thumbnail": null,
     "definition": "The Top Ten is a ratings system operated by a league. It accounts for an army's performance based on their events. The Top Ten may usually refer to the Weekly rankings, but might also refer to the Monthly rankings."
   },
 
   "treaty": {
-    "thumbnail": "troopstealing.png",
+    "thumbnail": null,
     "definition": "A treaty between two armies can either be a force treaty or a peace treaty. A force treaty is imposed by the winning army in a war. Whereas, a peace treaty is agreed mutually by both the armies, inside and outside of war."
   },
 
@@ -121,12 +171,12 @@
   },
 
   "trophy continent": {
-    "thumbnail": "troopstealing.png",
+    "thumbnail": null,
     "definition": "A trophy continent is a group of <dfn>trophy lands</dfn>."
   },
 
   "trophy lands": {
-    "thumbnail": "troopstealing.png",
+    "thumbnail": null,
     "definition": "Trophy lands are map <dfn>servers</dfn> that were awarded to one or more winning armies in a map tournament. These are secured, and cannot be competed for or interacted with."
   },
 
@@ -137,12 +187,12 @@
 
   "visitors": {
     "thumbnail": null,
-    "definition": "A visitor is an individual present in the SWAT Discord server, belonging to another Club Penguin army, or unaffiliated."
+    "definition": "A visitor is an individual present in the SWAT Discord server, belonging to another Club Penguin army, or unaffiliated. They do not hold a rank in SWAT."
   },
 
   "warm up": {
     "thumbnail": null,
-    "definition": "Warm up occurs later in the <dfn>pre-room</dfn>, during which tactics are sent. This is not part of the main event, however, and is only for activity checks and practice."
+    "definition": "Warm up occurs later in the <dfn>pre-room</dfn>, during which tactics are sent for practice purposes. This is not part of the main event or battle, however, and is only for activity checks and revision."
   }
 
 }

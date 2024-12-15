@@ -13,17 +13,19 @@
 
     <title>SWAT Guidebook</title>
 
-    <link rel="stylesheet" href="./main.css">
-    <link rel="stylesheet" href="./animations.css">
-    <link rel="stylesheet" href="./discord.css">
-    <link rel="stylesheet" href="./mobile.css">
+    <link rel="stylesheet" href="./stylesheets/app.css">
+    <link rel="stylesheet" href="./stylesheets/main.css">
+    <link rel="stylesheet" href="./stylesheets/animations.css">
+    <link rel="stylesheet" href="./stylesheets/discord.css">
+    <link rel="stylesheet" href="./stylesheets/mobile.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer></script>
-    <script src="./discord.js" defer></script>
-    <script src="./bcrypt.min.js" defer></script>
-    <script src="./app.js" defer></script>
-    <script src="./sessionManager.js" defer></script>
-    <script src="./mobile.js" defer></script>
+    <script src="./scripts/discord.js" defer></script>
+    <script src="./scripts/bcrypt.min.js" defer></script>
+    <script src="./scripts/client.js" defer></script>
+    <script src="./scripts/app.js" defer></script>
+    <script src="./scripts/sessionManager.js" defer></script>
+    <script src="./scripts/mobile.js" defer></script>
 
   </head>
 
@@ -127,6 +129,12 @@
       <small>Disabling animations can improve performance.</small>
       <br>
       <br>
+      <input name="preloader" type="checkbox" oninput="client.settings.set('preloader', this.checked)"></input>
+      <label>Enable preloader</label>
+      <br>
+      <small>Enabling the article preloader will load all articles when this guidebook is launched. So, when you open an article, it will access the preloaded version. This drastically speeds up loading articles.</small>
+      <br>
+      <br>
       <input name="discordWidget" type="checkbox" oninput="client.settings.set('discordWidget', this.checked)"></input>
       <label>Show Discord widget</label>
       <br>
@@ -143,7 +151,7 @@
       <hr>
       <b>SESSIONS</b>
       <br>
-      <p>Your tab history includes <b id="sessionsRecordCount">…</b> articles that you recently visited.</p>
+      <p>Your tab history includes <b id="sessionsRecordCount">…</b> articles that you recently visited. <a href="./SessionHistoryReader/index.html" target="_blank">Use the history reader.</a></p>
       <button onclick="client.settings.copySessionHistory(this)">Copy session history to clipboard</button>
       <button class="danger" onclick="client.settings.deleteSessionHistory(true)">Delete session history</button>
     </div>

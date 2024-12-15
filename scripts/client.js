@@ -8,6 +8,31 @@ const client = {
   tabHistory: [],
   previousTab: null,
   currentTab: null,
+  centerModeTabs: [
+    "Overview"
+  ],
+  preloadTabs: [
+    "Overview",
+    "Foreword",
+    "Essentials",
+    "Essentials/Recruiting",
+    "Essentials/Mentoring",
+    "Essentials/Attending_Events",
+    "Essentials/Leading_Events",
+    "Armies_Explained",
+    "Armies_Explained/Army_Map",
+    "Armies_Explained/Wars",
+    "Armies_Explained/Tournaments",
+    "Armies_Explained/Judging",
+    "SWAT_Bot",
+    "SWAT_Bot/History",
+    "SWAT_Bot/Commands",
+    "Promotions",
+    "Server_Tickets",
+    "Diplomacy",
+    "Recruitment_Regiment",
+  ],
+  preloadedContent: {},
   infoboxTimeout: null,
   infoboxDefinition: undefined,
   launcher: {
@@ -37,6 +62,12 @@ localStorage.__proto__.writeToObject = function(item, property, value) {
   localStorage.setItem(item, JSON.stringify(object));
 }
 
+client.preloadAllArticles = async function() {
+  client.preloadTabs.forEach(function(tab) {
+    preloadArticle(tab);
+  });
+}
+
 client.infobox.thumbnail = document.querySelector("div#infobox img");
 client.infobox.text = document.querySelector("div#infobox p");
 client.infobox.button = document.querySelector("div#infobox button");
@@ -56,6 +87,11 @@ client.infobox.hide = function(timeout) {
 }
 
 client.settings.inputs = {};
+client.settings.inputs.blurEffects = document.querySelector(`input[name="blurEffects"]`);
+client.settings.inputs.animations = document.querySelector(`input[name="animations"]`);
+client.settings.inputs.discordWidget = document.querySelector(`input[name="discordWidget"]`);
+client.settings.inputs.preloader = document.querySelector(`input[name="preloader"]`);
+client.settings.inputs.discordWidgetColor = document.querySelector(`input[name="discordWidgetColor"]`);
 client.settings.sessions = {
   recordCount: document.querySelector("b#sessionsRecordCount")
 };
@@ -69,14 +105,31 @@ client.settings.close = function() {
   client.modalWrapper.classList.remove("visible");
   client.openedModalElement = null;
 }
+client.settings.applyFallbacks = async function() {
+  localStorage.itemFallback("Settings", JSON.stringify({}));
+  localStorage.propertyFallback("Settings", "blurEffects", true);
+  localStorage.propertyFallback("Settings", "animations", true);
+  localStorage.propertyFallback("Settings", "preloader", true);
+  localStorage.propertyFallback("Settings", "discordWidget", true);
+  localStorage.propertyFallback("Settings", "discordWidgetColor", "#006900");
+}
+
+client.settings.fetchSaved = async function() {
+  if (localStorage.getItem("Settings")) {
+    let Settings = JSON.parse(localStorage.getItem("Settings"));
+    for (const key in Settings) {
+      client.settings.set(key, Settings[key]);
+    }
+  }
+}
 client.settings.reset = function(confirmation) {
 
   let message = "Are you sure that you would like to reset all settings? All settings will automatically be set to their default options.";
 
   function perform() {
     localStorage.removeItem("Settings");
-    applySettingFallbacks();
-    fetchSavedSettings();
+    client.settings.applyFallbacks();
+    client.settings.fetchSaved();
   }
 
   if (confirmation == true) {
@@ -86,10 +139,6 @@ client.settings.reset = function(confirmation) {
   }
 
 }
-client.settings.inputs.blurEffects = document.querySelector(`input[name="blurEffects"]`);
-client.settings.inputs.animations = document.querySelector(`input[name="animations"]`);
-client.settings.inputs.discordWidget = document.querySelector(`input[name="discordWidget"]`);
-client.settings.inputs.discordWidgetColor = document.querySelector(`input[name="discordWidgetColor"]`);
 client.settings.set = function(option, value) {
   let interprettedValue = value;
   localStorage.writeToObject("Settings", option, interprettedValue);
@@ -99,6 +148,9 @@ client.settings.set = function(option, value) {
   } else if (option == 'animations') {
     if (value == true) client.settings.addAnimations();
     if (value == false) client.settings.removeAnimations();
+  } else if (option == 'preloader') {
+    if (value == true) client.settings.enablePreloader();
+    if (value == false) client.settings.disablePreloader();
   } else if (option == 'discordWidget') {
     if (value == true) client.settings.showDiscordWidget();
     if (value == false) client.settings.hideDiscordWidget();
@@ -136,6 +188,12 @@ client.settings.addAnimations = function() {
   document.querySelector("div#infobox").style.setProperty("transition", "bottom 250ms");
   document.querySelector("img.glowOnHover").classList.add("animate");
 };
+client.settings.enablePreloader = function() {
+  client.preloadAllArticles();
+};
+client.settings.disablePreloader = function() {
+  client.preloadedContent = {};
+};
 client.settings.showDiscordWidget = function() {
   Discord.crate.show();
 };
@@ -151,62 +209,7 @@ client.modalWrapper.addEventListener("click", function() {
   this.classList.remove("visible");
 });
 
-function applySettingFallbacks() {
-  localStorage.itemFallback("Settings", JSON.stringify({}));
-  localStorage.propertyFallback("Settings", "blurEffects", true);
-  localStorage.propertyFallback("Settings", "animations", true);
-  localStorage.propertyFallback("Settings", "discordWidget", true);
-  localStorage.propertyFallback("Settings", "discordWidgetColor", "#006900");
-}
-
-function fetchSavedSettings() {
-  if (localStorage.getItem("Settings")) {
-    let Settings = JSON.parse(localStorage.getItem("Settings"));
-    for (const key in Settings) {
-      client.settings.set(key, Settings[key]);
-    }
-  }
-}
-fetchSavedSettings();
-
-async function onLoad() {
-
-  await fetch(`./config.json`).then(json => {
-    return json.text();
-  }).then(raw => {
-    client.config = JSON.parse(raw);
-  });
-
-  await fetch(`./definitions.json`).then(json => {
-    return json.text();
-  }).then(raw => {
-    definitions = JSON.parse(raw);
-  });
-
-  await goToURL();
-  await startLauncher();
-
-}
-
-async function goToURL() {
-
-  let originalHash = location.hash;
-  let hash = location.hash.replace(`#`, ``).split(":")[0];
-
-  if (hash != "") {
-    await switchTab(hash);
-  } else {
-    await switchTab(client.config.entrypoint);
-  }
-
-  if (originalHash.replace(`#`, ``).search(":") != -1) {
-    document.querySelector(`[id="${originalHash.replace("#", "")}"]`).scrollIntoView();
-    location.hash = originalHash;
-  }
-
-}
-
-async function forEachElement(query, callback) {
+client.forEachElement = async function(query, callback) {
 
   let elements = document.querySelectorAll(query);
   elements.forEach(function(element) {
@@ -215,57 +218,16 @@ async function forEachElement(query, callback) {
 
 }
 
-async function switchTab(tabName, redirect) {
+client.format = async function(parent) {
 
-  if (!tabName) return new Error("Tab name not provided.");
+  if (!parent) parent = `:root`;
 
-  let appendix = ``;
-  let path = tabName.replace("#", "");
-
-  if (redirect) {
-    appendix = `<a onclick="goBack()">← Go Back</a>`
-  }
-
-  await fetch(`./guides/${path}.html`).then(content => {
-    if (content.status == 404) {
-      return `
-        <h1>Not found!</h1>
-        <div class="danger">
-          <b>Content not found!</b>\n<p>The guide you have directed to does not exist. Please find your guide using the navigation menu on the left.</p>
-          <small>In an attempt to fetch the hypothetical resource, a response with status code <b>${content.status}</b> was received.</small>
-        </div>
-      `;
-    } else {
-      return content.text();
-    }
-  }).then(raw => {
-    client.main.innerHTML = `${appendix}${raw}`;
-  });
-
-  if (tabName != "Overview") {
-    client.body.classList.remove("centerMode");
-  } else {
-    client.body.classList.add("centerMode");
-  }
-
-  document.querySelector(`aside a[href="#${client.currentTab}"]`)?.classList.remove("active");
-  document.querySelector(`aside a[href="#${tabName}"]`)?.classList.add("active");
-
-  client.previousTab = client.currentTab;
-  client.currentTab = tabName;
-  client.tabHistory.log({
-    tabName: client.currentTab,
-    timestamp: Date.now()
-  });
-  client.settings.updateInformation();
-  location.hash = `#${tabName}`;
-
-  forEachElement("dfn", function(element) {
+  client.forEachElement(`${parent} dfn`, function(element) {
     element.setAttribute(`title`, `Define "${element.innerText}"`);
     element.setAttribute(`onclick`, `define(this)`);
   });
 
-  forEachElement("div.textblock", function(element) {
+  client.forEachElement(`${parent} div.textblock`, function(element) {
     element.innerHTML = element.innerHTML.trim();
 
     let copyButton = document.createElement("button");
@@ -274,40 +236,24 @@ async function switchTab(tabName, redirect) {
     element.prepend(copyButton);
   });
 
-  forEachElement(`[id*=":"]`, function(element) {
+  client.forEachElement(`${parent} [id*=":"]`, function(element) {
     let copyButton = document.createElement("button");
     copyButton.innerHTML = "Copy Link";
     copyButton.setAttribute("onclick", `copyLink("${element.id}")`);
     element.appendChild(copyButton);
   });
 
-  forEachElement(`span.slash-command`, function(element) {
+  client.forEachElement(`${parent} span.slash-command`, function(element) {
     element.setAttribute(`title`, `Click to copy`);
     element.setAttribute(`onclick`, `copySlashCommand(this)`);
   });
 
-  forEachElement(`span.discord-channel[channelID]`, function(element) {
+  client.forEachElement(`${parent} span.discord-channel[channelID]`, function(element) {
     element.setAttribute(`title`, `Click to view`);
     element.setAttribute(`onclick`, `Discord.onChannelMentionClick(this)`);
   });
 
-  forEachElement(`a[href^="http:"], a[href^="https:"]`, function(element) {
-    element.setAttribute("title", "This external link will open in a new tab.");
-    element.setAttribute("target", "_blank");
-  });
-
-  forEachElement(`a[href^="#"]`, function(element) {
-    let targetTabName = element.getAttribute("href").replace("#", "");
-    if (!element.classList.contains("redirect")) {
-      element.setAttribute("title", "This internal link will redirect you to another resource.");
-      element.setAttribute("onclick", `switchTab("${targetTabName}")`);
-    } else {
-      element.setAttribute("title", "This internal link will switch you to another resource.");
-      element.setAttribute("onclick", `switchTab("${targetTabName}", true)`);
-    }
-  });
-
-  let externalResourceEmbeds = document.querySelectorAll(`div.external-resource`);
+  let externalResourceEmbeds = document.querySelectorAll(`${parent} div.external-resource`);
   externalResourceEmbeds.forEach(function(embedElement) {
     let link = embedElement.children[0].textContent.trim();
     let text = embedElement.children[1].textContent.trim();
@@ -330,94 +276,19 @@ async function switchTab(tabName, redirect) {
     embedElement.append(button);
   });
 
-}
-
-function define(dfnElement) {
-
-  let requestedDfn = dfnElement.innerText;
-  let definition = definitions[requestedDfn.toLowerCase()];
-
-  if (!definition) {
-    definition = {
-      definition: `Error! Could not find a definition for <b>${requestedDfn}</b>.`
-    };
-    client.infobox.hide(5000);
-  } else {
-    client.infobox.hide(30000);
-  }
-
-  if (!client.infobox.classList.contains("visible") || requestedDfn != client.infoboxDefinition) {
-    client.infobox.classList.add("visible");
-    client.infobox.thumbnail.src = `thumbnails/${definition.thumbnail ?? 'logo.png'}`;
-    client.infobox.text.innerHTML = definition.definition;
-    client.infoboxDefinition = requestedDfn;
-    client.infobox.hide(30000);
-  } else {
-    client.infobox.hide();
-  }
-
-  let dfnElements = document.querySelectorAll(`div#infobox dfn`);
-  dfnElements.forEach(function(dfnElement) {
-    dfnElement.setAttribute(`title`, `Define "${dfnElement.innerText}"`);
-    dfnElement.setAttribute(`onclick`, `define(this)`);
+  client.forEachElement(`${parent} a[href^="http:"], a[href^="https:"]`, function(element) {
+    element.setAttribute("title", "This external link will open in a new tab.");
+    element.setAttribute("target", "_blank");
   });
 
-}
-
-function goBack() {
-  switchTab(client.previousTab, false);
-}
-
-async function copyText(element) {
-
-  await navigator.clipboard.writeText(element.parentElement.textContent.replace("Copy", "").trim());
-  element.innerHTML = "Copied";
-  setTimeout(() => {
-    element.innerHTML = "Copy";
-  }, 5000);
-
-}
-
-async function copyLink(id) {
-  await navigator.clipboard.writeText(`https://${location.host}/Guidebook/#${id}`);
-}
-
-async function copySlashCommand(element) {
-  await navigator.clipboard.writeText(`/${element.innerText}`);
-}
-
-async function startLauncher() {
-
-  client.launcher.text.innerHTML = `Greetings, agent! Please enter the password required to access this interesting guidebook…`;
-
-  let storedPassword = sessionStorage.getItem("Password");
-  if (storedPassword) {
-    login(storedPassword);
-  } else {
-    client.launcher.screen.style.display = "flex";
-    client.launcher.input.focus();
-  }
-
-}
-
-async function login(password) {
-
-  dcodeIO.bcrypt.compare(password, client.config.hashed_password, function(err, res) {
-    if (err) {
-      client.launcher.screen.style.display = "flex";
-      client.launcher.input.focus();
-      console.error(err);
-      return new Error(err);
-    };
-
-    if (res === false) {
-      client.launcher.screen.style.display = "flex";
-      client.launcher.input.focus();
-      client.launcher.errorText.innerHTML = `Incorrect password! You might want to keep typing until you get it right.`;
-    } else if (res === true) {
-      client.launcher.screen.style.display = "none";
-      client.launcher.input.focus();
-      sessionStorage.setItem("Password", password);
+  client.forEachElement(`${parent} a[href^="#"]`, function(element) {
+    let targetTabName = element.getAttribute("href").replace("#", "");
+    if (!element.classList.contains("redirect")) {
+      element.setAttribute("title", "This internal link will redirect you to another resource.");
+      element.setAttribute("onclick", `switchTab("${targetTabName}")`);
+    } else {
+      element.setAttribute("title", "This internal link will switch you to another resource.");
+      element.setAttribute("onclick", `switchTab("${targetTabName}", true)`);
     }
   });
 

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Reader</title>
+
+    <style>
+
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Unbounded:wght@200..900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
+
+      body {
+        background: #202020;
+        color: white;
+        font-family: 'Outfit', sans-serif;
+      }
+
+      textarea {
+        background: #20202020;
+        color: white;
+      }
+
+      table {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        border-collapse: collapse;
+        min-width: 50%;
+        width: 100%;
+      }
+
+      table, td, th {
+        border: 1px #FFFFFF40 solid;
+      }
+
+      td, th {
+        padding: 10px;
+      }
+
+      th {
+        background: #FFFFFF10;
+        text-align: center;
+      }
+
+      td {
+        text-align: left;
+        vertical-align: top;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <textarea id="input" placeholder="Insert history JSON" style="width: 100%; height: 150px;"></textarea>
+    <br>
+    <button onclick="readHistory(document.querySelector('#input').value)">View</button>
+
+    <table>
+      <tbody>
+        <th>Timestamp</th>
+        <th>Tab Name</th>
+        <th>Duration</th>
+      </tbody>
+    </table>
+
+    <script src="./sessionHistoryReader.js"></script>
+    
+  </body>
+
+</html>
