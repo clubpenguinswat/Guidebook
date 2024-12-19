@@ -56,8 +56,17 @@
 @media screen and (max-width: 500px) {
 
   aside {
-    background: #000000FF;
+    background: #202020FF;
     width: 100%;
+  }
+
+  div.modal {
+    top: 0;
+    left: 0;
+    background: #202020FF;
+    width: 88%;
+    height: 92.5%;
+    border-radius: 0px;
   }
 
 }

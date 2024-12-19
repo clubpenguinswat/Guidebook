@@ -16,6 +16,27 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*::-webkit-scrollbar {
+  width: 12.5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #202020;
+}
+ 
+*::-webkit-scrollbar-thumb {
+  background: #101010;
+  border-radius: 100px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: #505050;
+}
+
 body {
   margin: 0;
   display: flex;
@@ -46,11 +67,14 @@ aside {
   top: 0;
   left: 0;
   width: 20%;
-  height: 100%;
+  height: calc(100% - 30px);
   padding: 15px;
   background: #00000080;
-  overflow-y: auto;
   z-index: 1000;
+}
+
+aside div#navigation {
+  overflow-y: auto;
 }
 
 aside div#floatBottom {
@@ -58,7 +82,7 @@ aside div#floatBottom {
   margin-left: -15px;
   background: #FFFFFF20;
   position: absolute;
-  bottom: 30px;
+  bottom: 0;
 }
 
 aside div#floatBottom button {
