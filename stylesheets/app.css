@@ -70,11 +70,8 @@ aside {
   height: calc(100% - 30px);
   padding: 15px;
   background: #00000080;
-  z-index: 1000;
-}
-
-aside div#navigation {
   overflow-y: auto;
+  z-index: 1000;
 }
 
 aside div#floatBottom {

@@ -1,5 +1,6 @@
-
 async function onLoad() {
+
+  client.main.addEventListener("scroll", onScroll);
 
   await fetch(`./config.json`).then(json => {
     return json.text();
@@ -21,6 +22,18 @@ async function onLoad() {
   await client.settings.fetchSaved();
   await goToURL();
   await startLauncher();
+
+}
+
+async function onScroll() {
+
+  let atBottom = (client.main.scrollTop + client.main.clientHeight >= client.main.scrollHeight);
+
+  if (atBottom) {
+    console.log("Bottom!");
+  } else {
+    console.log("Not bottom!");
+  }
 
 }
 
